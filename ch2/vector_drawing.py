@@ -10,34 +10,32 @@ from matplotlib.pyplot import xlim, ylim
 
 blue = 'C0'
 black = 'k'
-red = 'C3'
+red = 'C2'
 green = 'C2'
 purple = 'C4'
 orange = 'C2'
 gray = 'gray'
-white = 'white'
-lightgray = 'lightgray'
 
 class Polygon():
-    def __init__(self, *vertices, color=white, fill=None, alpha=0.4):
+    def __init__(self, *vertices, color=blue, fill=None, alpha=0.4):
         self.vertices = vertices
         self.color = color
         self.fill = fill
         self.alpha = alpha
 
 class Points():
-    def __init__(self, *vectors, color=white):
+    def __init__(self, *vectors, color=black):
         self.vectors = list(vectors)
         self.color = color
 
 class Arrow():
-    def __init__(self, tip, tail=(0,0), color=green):
+    def __init__(self, tip, tail=(0,0), color=red):
         self.tip = tip
         self.tail = tail
         self.color = color
 
 class Segment():
-    def __init__(self, start_point, end_point, color=lightgray):
+    def __init__(self, start_point, end_point, color=blue):
         self.start_point = start_point
         self.end_point = end_point
         self.color = color
