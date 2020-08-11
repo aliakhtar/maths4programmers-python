@@ -11,7 +11,7 @@ from matplotlib.pyplot import xlim, ylim
 blue = 'C0'
 black = 'k'
 red = 'C2'
-green = 'C2'
+green = 'green'
 purple = 'C4'
 orange = 'C2'
 gray = 'gray'
