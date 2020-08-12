@@ -11,3 +11,8 @@ def length(vector):
     squares = [coord ** 2 for coord in vector]
     squareSums = sum(squares)
     return sqrt(squareSums)
+
+
+def scale(s, v):
+    scaled = tuple(x * s for x in v)
+    return scaled
