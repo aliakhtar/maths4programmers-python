@@ -1,4 +1,4 @@
-from math import sqrt
+from math import *
 
 
 def add(*vectors):
@@ -22,3 +22,11 @@ def dot(u, v):
     coords = zip(u, v)
     coordProds = [x * y for x, y in coords]
     return sum(coordProds)
+
+def angle_between(u, v):
+    #cos(angle) = dotProduct / product of lengths
+    # angle = acos(dotProd / product of lengths)
+    dotProd = dot(u, v)
+    lengthProd = length(u) * length(v)
+    angle = acos( dotProd / lengthProd )
+    return angle
