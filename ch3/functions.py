@@ -16,3 +16,9 @@ def length(vector):
 def scale(s, v):
     scaled = tuple(x * s for x in v)
     return scaled
+
+
+def dot(u, v):
+    coords = zip(u, v)
+    coordProds = [x * y for x, y in coords]
+    return sum(coordProds)
