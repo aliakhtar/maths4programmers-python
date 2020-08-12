@@ -1,4 +1,5 @@
 from math import *
+from random import *
 
 
 def add(*vectors):
@@ -30,3 +31,17 @@ def angle_between(u, v):
     lengthProd = length(u) * length(v)
     angle = acos( dotProd / lengthProd )
     return angle
+
+
+def rand_angle():
+    deg = randint(1, 361)
+    #return deg
+    return deg * pi / 180
+
+
+def to_cartesian(polar_vector):
+    # noinspection PyShadowingNames
+    length, angle = polar_vector[0], polar_vector[1]
+    x = length * cos(angle)
+    y = length * sin(angle)
+    return x, y
