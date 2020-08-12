@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import xlim, ylim
 
-from colors import *
+from ch3.colors import *
 
 class Polygon2D():
     def __init__(self, *vertices, color=blue, fill=None, alpha=0.4):
