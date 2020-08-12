@@ -24,7 +24,7 @@ def dot(u, v):
     return sum(coordProds)
 
 def angle_between(u, v):
-    #cos(angle) = dotProduct / product of lengths
+    # cos(angle) = dotProduct / product of lengths
     # angle = acos(dotProd / product of lengths)
     dotProd = dot(u, v)
     lengthProd = length(u) * length(v)
