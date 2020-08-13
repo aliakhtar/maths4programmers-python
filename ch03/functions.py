@@ -37,3 +37,10 @@ def rand_angle():
     deg = randint(1, 361)
     #return deg
     return deg * pi / 180
+
+
+# noinspection PyRedundantParentheses
+def cross(u, v):
+    ux, uy, uz = u
+    vx, vy, vz = v
+    return (uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
