@@ -57,3 +57,12 @@ def rotate_x_by(angle):
 
 def curry2(f):
     return lambda x: lambda y: f(x, y)
+
+
+def stretch_x(s, v):
+    x,y,z = v
+    return (x * s, y, z)
+
+
+def stretch_x_by(s):
+    return lambda v: stretch_x(s, v)
