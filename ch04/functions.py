@@ -18,3 +18,18 @@ def scale_by(s):
 
 def translate_by(t):
     return lambda v: add(t, v)
+
+
+def rotate_2d(angle, v):
+    l, a = to_polar(v)
+    return to_cartesian((l, a + angle))
+
+
+def rotate_z(angle, v):
+    x, y, z = v
+    x2, y2 = rotate_2d(angle, (x, y))
+    return x2, y2, z
+
+
+def rotate_z_by(angle):
+    return lambda v: rotate_z(angle, v)
