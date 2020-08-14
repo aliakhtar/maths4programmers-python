@@ -52,4 +52,8 @@ def rotate_x(angle, v):
 
 
 def rotate_x_by(angle):
-    return  lambda v: rotate_x(angle, v)
+    return lambda v: rotate_x(angle, v)
+
+
+def curry2(f):
+    return lambda x: lambda y: f(x, y)
