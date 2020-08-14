@@ -33,3 +33,13 @@ def rotate_z(angle, v):
 
 def rotate_z_by(angle):
     return lambda v: rotate_z(angle, v)
+
+
+def rotate_x(angle, v):
+    x, y, z = v
+    y2, z2 = rotate_2d(angle, (y, z))
+    return x, y2, z2
+
+
+def rotate_x_by(angle):
+    return  lambda v: rotate_x(angle, v)
