@@ -12,6 +12,16 @@ def compose(f1, f2):
     return lambda x: f1(f2(x))
 
 
+def compose2(*functions):
+    def deep_func(input):
+        state = input
+        for f in reversed(functions):
+            state = f(state)
+        return state
+
+    return deep_func
+
+
 def scale_by(s):
     return lambda v: scale(s, v)
 
