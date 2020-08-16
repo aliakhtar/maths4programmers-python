@@ -35,6 +35,10 @@ def rotate_2d(angle, v):
     return to_cartesian((l, a + angle))
 
 
+def rotate_2d_by(angle):
+    return lambda v: rotate_2d(angle, v)
+
+
 def rotate_z(angle, v):
     x, y, z = v
     x2, y2 = rotate_2d(angle, (x, y))
