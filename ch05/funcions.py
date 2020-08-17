@@ -62,7 +62,7 @@ def infer_matrix(n, T):
     inputs = [standard_basis(i, n) for i in range(1, n + 1)]
     #print(inputs)
     transformed = tuple( T(i) for i in inputs )
-    return transformed
+    return tuple(zip(*transformed))
 
 
 # Returns a matrix of the specified size containing random whole numbers as the values
