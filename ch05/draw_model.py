@@ -3,10 +3,10 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import matplotlib.cm
-import camera
-from vectors import *
+import ch05.camera as camera
+from ch05.vectors import *
 from math import *
-from transforms import *
+from ch05.transforms import *
 
 def normal(face):
     return(cross(subtract(face[1], face[0]), subtract(face[2], face[0])))

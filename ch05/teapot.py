@@ -1,4 +1,4 @@
-from transforms import *
+from ch05.transforms import *
 from math import pi
 
 with open("teapot.off") as f:

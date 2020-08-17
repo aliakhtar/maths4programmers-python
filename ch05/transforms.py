@@ -1,4 +1,4 @@
-from vectors import *
+from ch05.vectors import *
 
 ################################################################
 # Vector transformation functions we'll introduce in Chapter 4 #
