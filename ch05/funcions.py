@@ -8,12 +8,15 @@ def linear_combination(scalars, *vectors):
 
 
 def multiply_matrix_vector(matrix, vector):
+    if not len(matrix[0]) == len(vector):
+        raise Exception("Invalid dimensions, cols in m1 are %d and rows in m2 are %d" % (len(matrix[0]), len(vector)))
     scalars = vector
     vectors = zip(*matrix)
     return linear_combination(scalars, *vectors)
 
 
 def multiply_matrix(a, b):
+    verify_matrix_dimensions(a, b)
     # We'll view a as a list of its row vectors, and a as a list of its column vectors.
     # E.g if a = [
     # (a, b, c)
@@ -80,3 +83,12 @@ def matrix_power(power, matrix):
         result = multiply_matrix(result, matrix)
 
     return result
+
+
+def verify_matrix_dimensions(m1, m2):
+    # Make sure that the number of cols in m1 are the same as number of rows in m2
+    cols_in_m1 = len( m1[0] )
+    rows_in_m2 = len(m2)
+
+    if (cols_in_m1 != rows_in_m2):
+        raise Exception("Invalid matrix dimensions, %d cols in m1 and %d rows in m2" % (cols_in_m1, rows_in_m2))
