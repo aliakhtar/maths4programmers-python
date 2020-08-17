@@ -76,7 +76,7 @@ def random_matrix(rows, cols, min = -2, max = 2):
 
 def matrix_power(power, matrix):
     result = matrix
-    for _ in range(1, power + 1):
+    for _ in range(1, power):
         result = multiply_matrix(result, matrix)
 
     return result
