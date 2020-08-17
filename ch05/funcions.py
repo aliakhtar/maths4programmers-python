@@ -36,3 +36,29 @@ def multiply_matrix(a, b):
         tuple(dot(row, col) for col in zip(*b))
         for row in a
     )
+
+
+# Returns a tuple representing the standard basis vector for the given value of i. E.g if i is 1, x will be 1,
+# and all other coords until n will be 0.
+def standard_basis(i, n):
+    return tuple( 1 if j == i else 0 for j in range(1, n +  1) )
+
+
+# Given n representing the number of dimensions and T as a function which takes in a vector and performs
+# some linear transform on it, this function returns a matrix representing the results of performing T on N
+# standard basis vectors.
+
+# If input is a function which scales a vector by 2, and n = 3, the output will be:
+
+# (
+#   (2, 0, 0),
+#   (0, 2, 0),
+#   (0, 0, 2)
+# )
+
+# I.e it'll be 3 by 3, 3 rows and 3 columns
+def infer_matrix(n, T):
+    inputs = [standard_basis(i, n) for i in range(1, n + 1)]
+    #print(inputs)
+    transformed = tuple( T(i) for i in inputs )
+    return transformed
