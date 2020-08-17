@@ -1,4 +1,5 @@
 from ch05.vectors import *
+from random import randint
 
 
 def linear_combination(scalars, *vectors):
@@ -62,3 +63,12 @@ def infer_matrix(n, T):
     #print(inputs)
     transformed = tuple( T(i) for i in inputs )
     return transformed
+
+
+# Returns a matrix of the specified size containing random whole numbers as the values
+# Min and max specify the upper and lower bounds on the generated whole numbers
+def random_matrix(rows, cols, min = -2, max = 2):
+    return tuple(
+        tuple( randint(min, max) for i in range(cols))
+        for j in range(rows)
+    )
