@@ -72,3 +72,11 @@ def random_matrix(rows, cols, min = -2, max = 2):
         tuple( randint(min, max) for i in range(cols))
         for j in range(rows)
     )
+
+
+def matrix_power(power, matrix):
+    result = matrix
+    for _ in range(1, power + 1):
+        result = multiply_matrix(result, matrix)
+
+    return result
