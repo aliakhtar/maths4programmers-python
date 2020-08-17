@@ -32,7 +32,7 @@ def multiply_matrix(a, b):
 
     # I.e each row in the result matrix is a tuple of all dot products of a particular row w/ all cols
 
-    return [
+    return tuple(
         tuple(dot(row, col) for col in zip(*b))
         for row in a
-    ]
+    )
