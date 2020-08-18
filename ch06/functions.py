@@ -32,6 +32,11 @@ def test(eq, a, b, u, v, w):
     assert eq((a + b) * v, a * v + b * v)
     assert eq(a * v + a * w, a * (v + w))
 
+    for vector in [u, v, w]:
+        assert eq( vector.zero() + vector, vector )
+        assert eq( 0 * vector, vector.zero() )
+        assert eq( -vector + vector, vector.zero() )
+
 
 def test_vectors(generator, eq, iterations=100):
     for _ in range(iterations):
