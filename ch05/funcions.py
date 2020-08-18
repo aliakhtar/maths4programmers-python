@@ -92,3 +92,10 @@ def verify_matrix_dimensions(m1, m2):
 
     if (cols_in_m1 != rows_in_m2):
         raise Exception("Invalid matrix dimensions, %d cols in m1 and %d rows in m2" % (cols_in_m1, rows_in_m2))
+
+
+# Turns a column vector into a row vector or vice versa
+# eg if 1 col and 3 rows, returns 1 row with 3 cols, and vice versa.
+
+def transpose(vector):
+    return tuple(zip(*vector))
