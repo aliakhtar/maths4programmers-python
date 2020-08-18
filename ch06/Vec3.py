@@ -1,4 +1,7 @@
-class Vec3():
+from ch06.Vector import *
+
+
+class Vec3(Vector):
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
@@ -12,15 +15,6 @@ class Vec3():
 
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y and self.z == other.z
-
-    def __add__(self, other):
-        return self.add(other)
-
-    def __mul__(self, s):
-        return self.scale(s)
-
-    def __rmul__(self, s):
-        return self.scale(s)
 
     def __repr__(self):
         return "Vec3({}, {}, {})".format(self.x, self.y, self.z)
