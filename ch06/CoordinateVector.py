@@ -30,4 +30,4 @@ class CoordinateVector(Vector):
         return True
 
     def __repr__(self):
-        return "CoordVec({})".format(self.coordinates)
+        return "{} {}".format(self.__class__.__qualname__, self.coordinates)
