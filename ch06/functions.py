@@ -12,8 +12,16 @@ def rand_vec2():
     return Vec2(rand_scalar(), rand_scalar())
 
 
+def rand_vec3():
+    return Vec3(rand_scalar(), rand_scalar(), rand_scalar())
+
+
 def approx_equal_vec2(u, v):
     return isclose(u.x, v.x) and isclose(u.y, v.y)
+
+
+def approx_equal_vec3(u, v):
+    return isclose(u.x, v.x) and isclose(u.y, v.y) and isclose(u.z, v.z)
 
 
 def test(eq, a, b, u, v, w):
@@ -24,3 +32,12 @@ def test(eq, a, b, u, v, w):
     assert eq((a + b) * v, a * v + b * v)
     assert eq(a * v + a * w, a * (v + w))
 
+
+def test_vectors(generator, eq, iterations=100):
+    for _ in range(iterations):
+        a, b = rand_scalar(), rand_scalar()
+        u, v, w = generator(), generator(), generator()
+        #print("{}, {}, {}".format(u, v, w))
+        test(eq, a, b, u, v, w)
+
+    print("All tests passed")

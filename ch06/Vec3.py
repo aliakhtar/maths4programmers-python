@@ -13,7 +13,7 @@ class Vec3(Vector):
         self.z = z
 
     def add(self, other):
-        return Vec3( self.x + other.x, self.y + other.y, self.z * other.z )
+        return Vec3( self.x + other.x, self.y + other.y, self.z + other.z )
 
     def scale(self, s):
         return Vec3(self.x * s, self.y * s, self.z * s)
