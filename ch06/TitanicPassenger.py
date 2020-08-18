@@ -35,9 +35,14 @@ class TitanicPassenger(Vector):
             self.fare * s
         )
 
+    def __repr__(self):
+        return "TitanicPassenger(survived={}, p_cls = {}, age = {}, siblings = {}, kids = {}, fare = {}, name = {}, " \
+               "sex = {} ".format(self.survived, self.p_class, self.age, self.siblings, self.kids, self.fare, self.name,
+                                  self.sex)
+
     @classmethod
     def zero(cls):
-        TitanicPassenger(
+        return TitanicPassenger(
             0,
             0,
             0,
