@@ -14,6 +14,7 @@ class CoordinateVector(Vector):
         pass
 
     def add(self, other):
+        assert self.__class__ == other.__class__
         return self.__class__(*add(self.coordinates, other.coordinates))
 
     def scale(self, s):

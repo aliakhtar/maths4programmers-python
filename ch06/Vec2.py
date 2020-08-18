@@ -11,6 +11,7 @@ class Vec2(Vector):
         self.y = y
 
     def add(self, other):
+        assert self.__class__ == other.__class__
         return Vec2(self.x + other.x, self.y + other.y)
 
     def scale(self, s):
