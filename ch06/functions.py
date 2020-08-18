@@ -33,6 +33,8 @@ def test(eq, a, b, u, v, w):
     assert eq(a * v + a * w, a * (v + w))
 
     for vector in [u, v, w]:
+        if not hasattr(vector, "zero"):
+            return
         assert eq( vector.zero() + vector, vector )
         assert eq( 0 * vector, vector.zero() )
         assert eq( -vector + vector, vector.zero() )
