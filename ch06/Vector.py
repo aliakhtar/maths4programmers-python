@@ -11,6 +11,11 @@ class Vector(metaclass=ABCMeta):
     def scale(self, other):
         pass
 
+    @classmethod
+    @abstractmethod
+    def zero():
+        pass
+
     def subtract(self, other):
         return self.add(-1 * other)
 
@@ -25,3 +30,6 @@ class Vector(metaclass=ABCMeta):
 
     def __rmul__(self, s):
         return self.scale(s)
+
+    def __neg__(self):
+        return self.scale(-1)
