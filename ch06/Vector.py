@@ -33,3 +33,6 @@ class Vector(metaclass=ABCMeta):
 
     def __neg__(self):
         return self.scale(-1)
+
+    def __truediv__(self, s):
+        return self.scale(1 / s)
