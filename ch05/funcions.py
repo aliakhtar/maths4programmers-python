@@ -1,5 +1,6 @@
 from ch05.vectors import *
 from random import randint
+from numpy import isclose
 
 
 def linear_combination(scalars, *vectors):
@@ -45,7 +46,7 @@ def multiply_matrix(a, b):
 # Returns a tuple representing the standard basis vector for the given value of i. E.g if i is 1, x will be 1,
 # and all other coords until n will be 0.
 def standard_basis(i, n):
-    return tuple( 1 if j == i else 0 for j in range(1, n +  1) )
+    return tuple(1 if j == i else 0 for j in range(1, n + 1))
 
 
 # Given n representing the number of dimensions and T as a function which takes in a vector and performs
@@ -63,16 +64,16 @@ def standard_basis(i, n):
 # I.e it'll be 3 by 3, 3 rows and 3 columns
 def infer_matrix(n, T):
     inputs = [standard_basis(i, n) for i in range(1, n + 1)]
-    #print(inputs)
-    transformed = tuple( T(i) for i in inputs )
+    # print(inputs)
+    transformed = tuple(T(i) for i in inputs)
     return tuple(zip(*transformed))
 
 
 # Returns a matrix of the specified size containing random whole numbers as the values
 # Min and max specify the upper and lower bounds on the generated whole numbers
-def random_matrix(rows, cols, min = -2, max = 2):
+def random_matrix(rows, cols, min=-2, max=2):
     return tuple(
-        tuple( randint(min, max) for i in range(cols))
+        tuple(randint(min, max) for i in range(cols))
         for j in range(rows)
     )
 
@@ -87,7 +88,7 @@ def matrix_power(power, matrix):
 
 def verify_matrix_dimensions(m1, m2):
     # Make sure that the number of cols in m1 are the same as number of rows in m2
-    cols_in_m1 = len( m1[0] )
+    cols_in_m1 = len(m1[0])
     rows_in_m2 = len(m2)
 
     if (cols_in_m1 != rows_in_m2):
@@ -99,3 +100,24 @@ def verify_matrix_dimensions(m1, m2):
 
 def transpose(vector):
     return tuple(zip(*vector))
+
+
+def verify_linear_sum(T, u, v):
+    # T(u) + T(v) = T(u + v)
+    Tu = T(u)
+    Tv = T(v)
+
+    print("u: %s, v: %s, u + v: %s" %( str(u), str(v), str(add(u, v))))
+    print("T(u): %s, T(v): %s" % (str(Tu), str(Tv)))
+    print("T(u) + T(v): %s" % str(add(Tu, Tv)))
+    print("T(u + v): %s" % str( T( add(u, v) ) ))
+    print("Equal? %s" % str( isclose( add(Tu, Tv) ,T( add(u, v) ) ).all() ))
+    return isclose(add(Tu, Tv), T(add(u, v))).all() == True
+
+
+def verify_linear_multiples(T, s, v):
+    # T(sv) = s(T(v))
+    sv = scale(s, v)
+    Tv = T(v)
+    # return T(sv) == scale(s, Tv)
+    return isclose(T(sv), scale(s, Tv)).all() == True
