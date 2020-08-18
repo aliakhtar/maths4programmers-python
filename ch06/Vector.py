@@ -13,7 +13,7 @@ class Vector(metaclass=ABCMeta):
 
     @classmethod
     @abstractmethod
-    def zero():
+    def zero(cls):
         pass
 
     def subtract(self, other):

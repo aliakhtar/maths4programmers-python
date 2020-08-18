@@ -2,6 +2,11 @@ from ch06.Vector import *
 
 
 class Vec3(Vector):
+
+    @classmethod
+    def zero(cls):
+        return Vec3(0, 0, 0)
+
     def __init__(self, x, y, z):
         self.x = x
         self.y = y

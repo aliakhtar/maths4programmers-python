@@ -2,6 +2,10 @@ from ch06.Vector import Vector
 
 
 class Vec2(Vector):
+    @classmethod
+    def zero(cls):
+        return Vec2(0, 0)
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
