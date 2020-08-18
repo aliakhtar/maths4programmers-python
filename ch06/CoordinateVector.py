@@ -23,8 +23,8 @@ class CoordinateVector(Vector):
         if not self.__class__ == other.__class__:
             return False
 
-        #if not self.dimension == other.dimension:
-          #  return False
+        if not self.dimension() == other.dimension():
+            return False
 
         for i in range(0, len(self.coordinates)):
             if not self.coordinates[i] == other.coordinates[i]:
