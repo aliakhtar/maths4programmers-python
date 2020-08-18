@@ -20,11 +20,15 @@ class CoordinateVector(Vector):
         return self.__class__(*scale(s, self.coordinates))
 
     def __eq__(self, other):
-        if not self.dimension == other.dimension:
+        if not self.__class__ == other.__class__:
             return False
 
+        #if not self.dimension == other.dimension:
+          #  return False
+
         for i in range(0, len(self.coordinates)):
-            if not self.coordinates[i] == other.coordinates[0]:
+            if not self.coordinates[i] == other.coordinates[i]:
+                print("Nope, {}, {}, {}".format(i, self.coordinates[i], other.coordinates[i]))
                 return False
 
         return True

@@ -19,7 +19,8 @@ class Vec3(Vector):
         return Vec3(self.x * s, self.y * s, self.z * s)
 
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y and self.z == other.z
+        return self.__class__ == other.__class__ \
+                and self.x == other.x and self.y == other.y and self.z == other.z
 
     def __repr__(self):
         return "Vec3({}, {}, {})".format(self.x, self.y, self.z)
