@@ -1,5 +1,7 @@
 from ch06.Vector import *
 
+from math import isclose
+
 
 class TitanicPassenger(Vector):
 
@@ -27,7 +29,7 @@ class TitanicPassenger(Vector):
 
     def scale(self, s):
         return TitanicPassenger(
-            self.survived * s,  # might cause tests to fail without this
+            self.survived * s,  # needed to correctly calc avgs
             self.p_class * s,
             self.age * s,
             self.siblings * s,
@@ -50,3 +52,12 @@ class TitanicPassenger(Vector):
             0,
             0
         )
+
+    @classmethod
+    def approx_eq(cls, a, b):
+        return \
+            isclose(a.p_class, b.p_class) and \
+            isclose(a.age, b.age) and \
+            isclose(a.siblings, b.siblings) and \
+            isclose(a.kids, b.kids) and \
+            isclose(a.fare, b.fare)
