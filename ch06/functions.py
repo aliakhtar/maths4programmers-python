@@ -1,5 +1,8 @@
 from random import uniform
 from math import isclose
+import numpy as np
+import matplotlib.pyplot as plt
+from math import sin
 from ch06.Vec2 import *
 from ch06.Vec3 import *
 
@@ -35,16 +38,27 @@ def test(eq, a, b, u, v, w):
     for vector in [u, v, w]:
         if not hasattr(vector, "zero"):
             return
-        assert eq( vector.zero() + vector, vector )
-        assert eq( 0 * vector, vector.zero() )
-        assert eq( -vector + vector, vector.zero() )
+        assert eq(vector.zero() + vector, vector)
+        assert eq(0 * vector, vector.zero())
+        assert eq(-vector + vector, vector.zero())
 
 
 def test_vectors(generator, eq, iterations=100):
     for _ in range(iterations):
         a, b = rand_scalar(), rand_scalar()
         u, v, w = generator(), generator(), generator()
-        #print("{}, {}, {}".format(u, v, w))
+        # print("{}, {}, {}".format(u, v, w))
         test(eq, a, b, u, v, w)
 
     print("All tests passed")
+
+
+# plotting utility function for functions in this chapter
+def plot(fs, xmin, xmax):
+    xs = np.linspace(xmin, xmax, 100)
+    fig, ax = plt.subplots()
+    ax.axhline(y=0, color='k')
+    ax.axvline(x=0, color='k')
+    for f in fs:
+        ys = [f(x) for x in xs]
+        plt.plot(xs, ys)
