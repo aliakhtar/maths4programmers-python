@@ -21,11 +21,11 @@ class ImageVector(Vector):
     def add(self, other):
         new_pixels = [(r1 + r2, g1 + g2, b1 + b2)
                       for ((r1, g1, b1), (r2, g2, b2)) in zip(self.pixels, other.pixels)]
-        ImageVector(new_pixels)
+        return ImageVector(new_pixels)
 
     def scale(self, s):
         new_pixels = [(r * s, g * s, b * s) for (r,g, b) in self.pixels]
-        ImageVector(new_pixels)
+        return ImageVector(new_pixels)
 
     # noinspection PyProtectedMember
     def _repr_png_(self):
@@ -33,6 +33,6 @@ class ImageVector(Vector):
 
     @classmethod
     def zero(cls):
-        total_pixels = ImageVector.size[0] * ImageVector.size[1]
+        total_pixels = cls.size[0] * cls.size[1]
         zeroes = [(0, 0, 0) for _ in range(total_pixels)]
         return ImageVector(zeroes)
