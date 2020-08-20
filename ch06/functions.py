@@ -6,6 +6,7 @@ from math import sin
 from ch06.Vec2 import *
 from ch06.Vec3 import *
 from ch06.Function import *
+from ch06.matrices import matrix_multiply
 
 
 def rand_scalar():
@@ -98,3 +99,9 @@ def plot(fs, xmin, xmax):
     for f in fs:
         ys = [f(x) for x in xs]
         plt.plot(xs, ys)
+
+
+def multiply_vec3_matrix(vec, m):
+    vec_m = ((vec.x,), (vec.y,), (vec.z,))
+    result = matrix_multiply(m.matrix, vec_m)
+    return result
