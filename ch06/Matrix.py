@@ -58,3 +58,13 @@ class Matrix5x3(Matrix):
 
     def cols(self):
         return 3
+
+
+class Matrix3x5(Matrix):
+
+    def rows(self):
+        return 3
+
+    def cols(self):
+        return 5
+
