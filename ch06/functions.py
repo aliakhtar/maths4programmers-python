@@ -27,6 +27,15 @@ def approx_equal_vec3(u, v):
     return isclose(u.x, v.x) and isclose(u.y, v.y) and isclose(u.z, v.z)
 
 
+def approx_equal_funcs(f, g):
+    for _ in range(10):
+        x = uniform(-10, 10)
+        if not isclose(f(x), g(x)):
+            return False
+
+    return True
+
+
 def test(eq, a, b, u, v, w):
     assert eq(u + v, v + u)
     assert eq(u + (v + w), (u + v) + w)

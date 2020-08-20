@@ -1,5 +1,7 @@
 from ch06.Vector import *
 
+from ch06.functions import approx_equal_funcs
+
 
 # Takes a function of 1 number. Can be called like a function and be passed a number, returns the result of calling
 # its inner function on that variable
@@ -9,7 +11,7 @@ class Function(Vector):
         self.f = f
 
     def __call__(self, number):
-        #assert (str(number).isnumeric())
+        # assert (str(number).isnumeric())
         return self.f(number)
 
     def scale(self, s):
@@ -22,3 +24,6 @@ class Function(Vector):
     @classmethod
     def zero(cls):
         return Function(lambda n: 0)
+
+    def __eq__(self, other):
+        return approx_equal_funcs(self.f, other)
