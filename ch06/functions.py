@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from math import sin
 from ch06.Vec2 import *
 from ch06.Vec3 import *
+from ch06.Function import *
 
 
 def rand_scalar():
@@ -17,6 +18,11 @@ def rand_vec2():
 
 def rand_vec3():
     return Vec3(rand_scalar(), rand_scalar(), rand_scalar())
+
+
+def rand_function():
+    scaler = uniform(-10, 10)
+    return Function(lambda x: x * scaler)
 
 
 def approx_equal_vec2(u, v):
