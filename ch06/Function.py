@@ -9,7 +9,7 @@ class Function(Vector):
         self.f = f
 
     def __call__(self, number):
-        assert (str(number).isnumeric())
+        #assert (str(number).isnumeric())
         return self.f(number)
 
     def scale(self, s):
