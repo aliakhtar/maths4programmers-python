@@ -1,4 +1,4 @@
-from random import uniform
+from random import uniform, randint
 from math import isclose
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,6 +35,14 @@ def rand_matrix(rows, cols, factory):
     return factory(m)
 
 
+def rand_img():
+    rand_pixel = lambda: randint(0, 255)
+    from ch06.ImageVector import ImageVector
+
+    pixels = [(rand_pixel(), rand_pixel(), rand_pixel()) for _ in range(500 * 500)]
+    return ImageVector(pixels)
+
+
 def approx_equal_vec2(u, v):
     return isclose(u.x, v.x) and isclose(u.y, v.y)
 
@@ -62,6 +70,13 @@ def approx_equal_matrix(m1, m2):
                 return False
 
     return True
+
+
+def approx_equal_img(i1, i2):
+    results = [isclose(c1, c2) for p1, p2 in zip(i1.pixels, i2.pixels)
+                                for c1, c2 in zip(p1, p2)]
+
+    return all(results)
 
 
 def test(eq, a, b, u, v, w):
