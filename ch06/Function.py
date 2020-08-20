@@ -15,7 +15,7 @@ class Function(Vector):
         return self.f(number)
 
     def scale(self, s):
-        scaled = lambda n: self.f(n * s)
+        scaled = lambda n: self.f(n) * s
         return Function(scaled)
 
     def add(self, other):
