@@ -1,14 +1,15 @@
 from abc import ABCMeta, abstractmethod
 
+
 class Vector(metaclass=ABCMeta):
-    #def __init__(self):
+    # def __init__(self):
 
     @abstractmethod
     def add(self, other):
         pass
 
     @abstractmethod
-    def scale(self, other):
+    def scale(self, s):
         pass
 
     @classmethod
