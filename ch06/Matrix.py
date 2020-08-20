@@ -36,7 +36,25 @@ class Matrix(Vector):
             tuple(0 for _ in range(self.cols()))
             for _ in range(self.rows())
         )
-        self.__class__(new_m)
+        return self.__class__(new_m)
 
     def __repr__(self):
         return "{}{}".format(self.__class__.__qualname__, self.matrix)
+
+
+class Matrix2x2(Matrix):
+
+    def rows(self):
+        return 2
+
+    def cols(self):
+        return 2
+
+
+class Matrix5x3(Matrix):
+
+    def rows(self):
+        return 5
+
+    def cols(self):
+        return 3

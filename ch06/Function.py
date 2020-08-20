@@ -1,6 +1,6 @@
 from ch06.Vector import *
 
-from ch06.functions import approx_equal_funcs
+#from ch06.functions import approx_equal_funcs
 
 
 # Takes a function of 1 number. Can be called like a function and be passed a number, returns the result of calling
@@ -25,5 +25,5 @@ class Function(Vector):
     def zero(cls):
         return Function(lambda n: 0)
 
-    def __eq__(self, other):
-        return approx_equal_funcs(self.f, other)
+    #def __eq__(self, other):
+        #return approx_equal_funcs(self.f, other)

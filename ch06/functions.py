@@ -25,6 +25,15 @@ def rand_function():
     return Function(lambda x: x * scaler)
 
 
+def rand_matrix(rows, cols, factory):
+    m = tuple(
+        tuple(rand_scalar() for _ in range(cols))
+        for _ in range(rows)
+    )
+
+    return factory(m)
+
+
 def approx_equal_vec2(u, v):
     return isclose(u.x, v.x) and isclose(u.y, v.y)
 
@@ -38,6 +47,18 @@ def approx_equal_funcs(f, g):
         x = uniform(-10, 10)
         if not isclose(f(x), g(x)):
             return False
+
+    return True
+
+
+def approx_equal_matrix(m1, m2):
+    if not m1.rows() == m2.rows() or not m1.cols() == m2.cols():
+        return False
+
+    for r in range(m1.rows()):
+        for c in range(m1.cols()):
+            if not isclose(m1.matrix[r][c], m2.matrix[r][c]):
+                return False
 
     return True
 
