@@ -3,6 +3,8 @@ from math import isclose
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sin
+
+from ch06.ImageVector import ImageVector
 from ch06.Vec2 import *
 from ch06.Vec3 import *
 from ch06.Function import *
@@ -120,3 +122,9 @@ def multiply_vec3_matrix(vec, m):
     vec_m = ((vec.x,), (vec.y,), (vec.z,))
     result = matrix_multiply(m.matrix, vec_m)
     return result
+
+
+def solid_color(r, g, b):
+    total_pixels = ImageVector.size[0] * ImageVector.size[1]
+    pixels = [(r,g,b) for _ in range(total_pixels)]
+    return ImageVector(pixels)
