@@ -76,7 +76,7 @@ def approx_equal_matrix(m1, m2):
 
 def approx_equal_img(i1, i2):
     results = [isclose(c1, c2) for p1, p2 in zip(i1.pixels, i2.pixels)
-                                for c1, c2 in zip(p1, p2)]
+               for c1, c2 in zip(p1, p2)]
 
     return all(results)
 
@@ -126,23 +126,24 @@ def multiply_vec3_matrix(vec, m):
 
 def solid_color(r, g, b):
     total_pixels = ImageVector.size[0] * ImageVector.size[1]
-    pixels = [(r,g,b) for _ in range(total_pixels)]
+    pixels = [(r, g, b) for _ in range(total_pixels)]
     return ImageVector(pixels)
 
 
 # Takes a 50x50 matrix of brightness values and returns a 500x500 ImageVector where each pixel's RGB values are set
 # to the same as that of the brightness pixel corresponding to that block
-def img_from_brightness(brightness_matrix):
+def img_from_brightness(brightness_matrix, new_size=ImageVector.size[0] * ImageVector.size[1]):
 
-    def brightness_for_pixel(row, col):
-        row_i = round(row / 10)
-        col_i = round(col / 10)
-        return brightness_matrix[row_i][col_i]
+    def brightness_for_pixel(index):
+        #print("{}, {}".format(index, floor(index / 10)))
+        max = len(brightness_matrix) - 1
+        return brightness_matrix[ min(round(index / 10), max ) ]
 
-    new_pixels = [ ]
-    for row in range(500):
-        for col in range(500):
-            brightness_avg = brightness_for_pixel(row, col)
-            new_pixels.append( (brightness_avg, brightness_avg, brightness_avg) )
+    new_pixels = []
+    for i in range(new_size):
+        brightness_avg = brightness_for_pixel(i)
+        new_pixels.append((brightness_avg, brightness_avg, brightness_avg))
+
+    print(str(new_pixels))
 
     return ImageVector(new_pixels)
