@@ -48,6 +48,7 @@ def main():
         clock.tick()
         screen.fill(BLACK)
 
+        draw_poly(screen, ship, color=RED)
         for a in asteroids:
             draw_poly(screen, a, color=GREEN)
 
