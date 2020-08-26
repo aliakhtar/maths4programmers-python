@@ -133,11 +133,10 @@ def solid_color(r, g, b):
 # Takes a 50x50 matrix of brightness values and returns a 500x500 ImageVector where each pixel's RGB values are set
 # to the same as that of the brightness pixel corresponding to that block
 def img_from_brightness(brightness_matrix, new_size=ImageVector.size[0] * ImageVector.size[1]):
-
     def brightness_for_pixel(index):
-        #print("{}, {}".format(index, floor(index / 10)))
+        # print("{}, {}".format(index, floor(index / 10)))
         max = len(brightness_matrix) - 1
-        return brightness_matrix[ min(round(index / 10), max ) ]
+        return brightness_matrix[min(round(index / 10), max)]
 
     new_pixels = []
     for i in range(new_size):
@@ -147,3 +146,29 @@ def img_from_brightness(brightness_matrix, new_size=ImageVector.size[0] * ImageV
     print(str(new_pixels))
 
     return ImageVector(new_pixels)
+
+
+def brightness_matrix(img, matrix_size=50 * 50, square_width=10):
+    #matrix = [0 for _ in range(matrix_size)]
+    matrix = []
+    max_index = matrix_size - 1
+
+    def matrix_index(pixel_index):
+        return min(pixel_index // 10, max_index)
+
+    square_num = 1
+    square_sum = 0
+    pixels_in_square = 0
+    for index, pixel_coords in enumerate(img.pixels):
+        square_boundary = (square_num * square_width * square_width) - 1
+        if (index < square_boundary):
+            square_sum += sum(pixel_coords) / 3.0
+            pixels_in_square += 1
+        else: # Square boundary reached;
+            square_avg = square_sum / pixels_in_square
+            matrix.append(square_avg)
+            #print("Sq number: {}, pixels in sq: {}, matrix len: {}".format(square_num, pixels_in_square, len(matrix)))
+            square_sum = 0
+            pixels_in_square = 0
+            square_num += 1
+    return matrix
