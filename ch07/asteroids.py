@@ -13,13 +13,23 @@ class PolygonModel():
 
     def transformed(self):
         translation = (self.x, self.y)
-        #rotated = self
+        # rotated = self
         return translate(translation, [rotate2d(self.angle, p) for p in self.points])
 
 
 class Ship(PolygonModel):
     def __init__(self):
         super().__init__([(0.5, 0), (-0.25, 0.25), (-0.25, -0.25)])
+
+    def laser_segment(self):
+        dist = 20.0 * sqrt(2)  # No idea what this is doing but apparently its to find the longest point somehow?
+        start_x, start_y = self.transformed()[0]
+        end_x = dist * cos(self.angle)
+        end_y = dist * sin(self.angle)
+        return (
+            (start_x, start_y),
+            (end_x, end_y)
+        )
 
 
 class Asteroid(PolygonModel):
