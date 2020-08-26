@@ -23,6 +23,7 @@ class Grayscaler():
         # Trippy but it works.
         block_col = pixel_index % self.img_cols
 
+        #print("Pixel: {}, row: {}, col: {}".format(pixel_index, block_row, block_col))
         return (block_row, block_col)
 
     # Expects a matrix of the dimensions square_count * square_count. Each element of the matrix represents a square
@@ -33,7 +34,7 @@ class Grayscaler():
         new_pixels = []
         for i in range(self.total_img_pixels):
             matrix_row, matrix_col = self.locate_block(i)
-            brightness_avg = lowres_matrix[matrix_row][matrix_col]
+            brightness_avg = lowres_matrix[matrix_row // self.sq_width] [matrix_col // self.sq_width]
             new_pixels.append( (brightness_avg, brightness_avg, brightness_avg) )
 
         return ImageVector(new_pixels)
