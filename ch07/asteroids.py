@@ -12,7 +12,9 @@ class PolygonModel():
         self.y = 0
 
     def transformed(self):
-        return (self.x, self.y)
+        translation = (self.x, self.y)
+        #rotated = self
+        return translate(translation, [rotate2d(self.angle, p) for p in self.points])
 
 
 class Ship(PolygonModel):
@@ -23,7 +25,7 @@ class Ship(PolygonModel):
 class Asteroid(PolygonModel):
     def __init__(self):
         sides = randint(5, 9)
-        vectors = [to_cartesian((uniform(0.5, 10), 2 * pi * i / sides))
+        vectors = [to_cartesian((uniform(0.5, 1.0), 2 * pi * i / sides))
                    for i in range(sides)]
 
         super().__init__(vectors)
