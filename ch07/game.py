@@ -1,5 +1,5 @@
 import pygame
-from math import pi, sqrt, cos, sin, atan2
+from math import pi, sqrt, cos, sin, atan2, fabs
 from random import uniform, randint
 from ch07.vectors import *
 from ch07.asteroids import *
@@ -8,8 +8,8 @@ ship = Ship()
 asteroids = [Asteroid() for _ in range(10)]
 
 for a in asteroids:
-    a.x = randint(-9, 9)
-    a.y = randint(-9, 9)
+    a.x = randint(-10, 10)
+    a.y = randint(-10, 10)
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -21,6 +21,9 @@ width, height = 400, 400
 
 
 def to_pixels(x, y):
+    new_x = (x + 10) * 20
+    new_y = fabs((y - 10) * 20)
+    #return (new_x, new_y)
     return (width / 2 + width * x / 20, height / 2 - height * y / 20)
 
 
