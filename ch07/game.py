@@ -21,8 +21,8 @@ width, height = 400, 400
 
 
 def to_pixels(x, y):
-    new_x = (x + 10) * 20
-    new_y = fabs((y - 10) * 20)
+    #new_x = (x + 10) * 20
+    #new_y = fabs((y - 10) * 20)
     #return (new_x, new_y)
     return (width / 2 + width * x / 20, height / 2 - height * y / 20)
 
