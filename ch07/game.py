@@ -21,9 +21,9 @@ width, height = 400, 400
 
 
 def to_pixels(x, y):
-    #new_x = (x + 10) * 20
-    #new_y = fabs((y - 10) * 20)
-    #return (new_x, new_y)
+    # new_x = (x + 10) * 20
+    # new_y = fabs((y - 10) * 20)
+    # return (new_x, new_y)
     return (width / 2 + width * x / 20, height / 2 - height * y / 20)
 
 
@@ -49,17 +49,27 @@ def main():
     while not done:
 
         clock.tick()
+
+        for event in pygame.event.get():  # User did something
+            if event.type == pygame.QUIT:  # If user clicked close
+                done = True  # Flag that we are done so we exit this loop
+
+        milliseconds = clock.get_time()
+        keys = pygame.key.get_pressed()
+
         screen.fill(BLACK)
 
         draw_poly(screen, ship, color=WHITE)
-        draw_segment(screen, *ship.laser_segment(), color=RED)
+
+        if keys[pygame.K_SPACE]:
+            draw_segment(screen, *ship.laser_segment(), color=RED)
+
         for a in asteroids:
             draw_poly(screen, a, color=GREEN)
 
         pygame.display.flip()
 
     pygame.quit()
-
 
 
 if __name__ == "__main__":
