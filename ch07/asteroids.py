@@ -2,6 +2,7 @@ import pygame
 from math import pi, sqrt, cos, sin, atan2
 from random import uniform, randint
 from ch07.vectors import *
+from ch07.functions import *
 
 
 class PolygonModel():
@@ -15,6 +16,19 @@ class PolygonModel():
         translation = (self.x, self.y)
         # rotated = self
         return translate(translation, [rotate2d(self.angle, p) for p in self.points])
+
+    def segments(self):
+        point_count = len(self.points)
+        points = self.transformed()
+        return [(points[i], points[(i + 1) % point_count])
+                for i in range(0, point_count)]
+
+    def does_intersect(self, other_segment):
+        for segment in self.points:
+            if do_segments_intersect(other_segment, segment):
+                return True
+
+        return False
 
 
 class Ship(PolygonModel):
