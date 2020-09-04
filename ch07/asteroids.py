@@ -24,7 +24,7 @@ class PolygonModel():
                 for i in range(0, point_count)]
 
     def does_intersect(self, other_segment):
-        for segment in self.points:
+        for segment in self.segments():
             if do_segments_intersect(other_segment, segment):
                 return True
 
