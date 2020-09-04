@@ -36,3 +36,12 @@ def do_segments_intersect(s1, s2):
         )
     except np.linalg.linalg.LinAlgError:
         return False
+
+
+def standard_form_3d(p1, p2, p3):
+    from ch07.vectors import subtract, cross, dot
+    parallel1 = subtract(p2, p1)
+    parallel2 = subtract(p3, p1)
+    a, b, c = cross(parallel1, parallel2)
+    d = dot((a, b, c), p1)
+    return (a, b, c, d)
