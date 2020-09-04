@@ -30,6 +30,13 @@ class PolygonModel():
 
         return False
 
+    def does_collide(self, other_polygon):
+        for segment in other_polygon.segments():
+            if self.does_intersect(segment):
+                return True
+
+        return False
+
 
 class Ship(PolygonModel):
     def __init__(self):
