@@ -108,3 +108,8 @@ def small_volume_change(flow_rate_func, time, duration):
     rate_at_time = flow_rate_func(time)
     volume_change_in_time = rate_at_time * duration
     return volume_change_in_time
+
+
+def volume_change(flow_rate_func, start, end, interval):
+    times = np.arange(start, end, interval)
+    return sum( [small_volume_change(flow_rate_func, t, interval) for t in times] )
