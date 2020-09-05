@@ -83,3 +83,20 @@ def decreasing_volume(t):
 # Exercise 8.5: Write a linear_volume_function and plot the flow rate over time to show that it is constant.
 def linear_volume(t):
     return 3 * t + 1
+
+
+def instantaneous_flow(vol, t, digits = 6):
+    tolerance = 10 ** (-digits)
+    interval = 1
+    last_avg_rate = avg_flow_rate(vol, t - interval, t + interval)
+
+    for i in range(0, 2 ** digits):
+        interval = interval / 10
+        current_avg = avg_flow_rate(vol, t - interval, t + interval)
+        difference = abs( last_avg_rate - current_avg )
+        if (difference < tolerance):
+            return round(current_avg, digits)
+        else:
+            last_avg_rate = current_avg
+
+    raise Exception("No derivative found")
