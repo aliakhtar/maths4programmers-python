@@ -102,3 +102,9 @@ def instantaneous_flow(vol, t, digits = 6):
 
 def get_flow_rate_function(vol):
     return lambda t: instantaneous_flow(vol, t)
+
+
+def small_volume_change(flow_rate_func, time, duration):
+    rate_at_time = flow_rate_func(time)
+    volume_change_in_time = rate_at_time * duration
+    return volume_change_in_time
