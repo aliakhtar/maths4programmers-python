@@ -63,4 +63,11 @@ def plot_secant(f, t1, t2, color='k'):
 
 def interval_flow_rates(vol, t1, t2, interval):
     intervals = np.arange(t1, t2, interval)
-    return [(t, avg_flow_rate(vol, t, t + interval )) for t in intervals]
+    return [(t, avg_flow_rate(vol, t, t + interval)) for t in intervals]
+
+
+def plot_interval_flow_rates(vol, t1, t2, interval):
+    series = interval_flow_rates(vol, t1, t2, interval)
+    times = [t for (t, _) in series]
+    values = [y for (_, y) in series]
+    plt.scatter(times, values)
