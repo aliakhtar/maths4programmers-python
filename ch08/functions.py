@@ -32,3 +32,9 @@ def volume(t):
 
 def flow_rate(t):
     return 3 * (t - 4) ** 2 / 64
+
+
+def avg_flow_rate(v, t1, t2):
+    deltaVol = v(t2) - v(t1)
+    deltaTime = t2 - t1
+    return deltaVol / deltaTime
