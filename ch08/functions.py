@@ -43,8 +43,6 @@ def avg_flow_rate(v, t1, t2):
 # Exercise 8.2: Write a Python function secant_line(f,x1,x2) that takes a function f(x) and two values, x1 and
 # x2, and that returns a new function representing a secant line over time. For instance, if you ran line =
 # secant_line(f,x1,x2), then line(3) would give you the y value of the secant line at x = 3 .
-
-
 def secant_line(f, t1, t2):
     slope = (f(t2) - f(t1)) / (t2 - t1)
     start = f(t1)
