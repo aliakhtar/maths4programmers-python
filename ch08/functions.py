@@ -100,3 +100,7 @@ def instantaneous_flow(vol, t, digits = 6):
             last_avg_rate = current_avg
 
     raise Exception("No derivative found")
+
+
+def get_flow_rate_function(vol):
+    return lambda t: instantaneous_flow(vol, t)
