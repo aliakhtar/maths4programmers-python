@@ -71,3 +71,11 @@ def plot_interval_flow_rates(vol, t1, t2, interval):
     times = [t for (t, _) in series]
     values = [y for (_, y) in series]
     plt.scatter(times, values)
+
+
+def decreasing_volume(t):
+    if t < 5:
+        return 10 - (t**2)/5
+    else:
+        return 0.2*(10-t)**2
+
