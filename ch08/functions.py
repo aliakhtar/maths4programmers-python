@@ -75,7 +75,11 @@ def plot_interval_flow_rates(vol, t1, t2, interval):
 
 def decreasing_volume(t):
     if t < 5:
-        return 10 - (t**2)/5
+        return 10 - (t ** 2) / 5
     else:
-        return 0.2*(10-t)**2
+        return 0.2 * (10 - t) ** 2
 
+
+# Exercise 8.5: Write a linear_volume_function and plot the flow rate over time to show that it is constant.
+def linear_volume(t):
+    return 3 * t + 1
