@@ -57,5 +57,5 @@ def secant_line(f, t1, t2):
 
 def plot_secant(f, t1, t2, color='k'):
     line_f = secant_line(f, t1, t2)
-    plot_function(line_f, t1, t2, 'Time', 'Value')
+    plot_function(line_f, t1, t2, c=color)
     plt.scatter([t1, t2], [f(t1), f(t2)], c=color)
