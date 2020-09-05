@@ -50,3 +50,12 @@ def secant_line(f, t1, t2):
     start = f(t1)
     deltaTime = lambda t: t - t1
     return lambda t: start + (deltaTime(t) * slope)
+
+
+# Exercise 8.3: Write a function that uses the code from the previous exercise to plot a secant line of a function f
+# between two given points.
+
+def plot_secant(f, t1, t2, color='k'):
+    line_f = secant_line(f, t1, t2)
+    plot_function(line_f, t1, t2, 'Time', 'Value')
+    plt.scatter([t1, t2], [f(t1), f(t2)], c=color)
