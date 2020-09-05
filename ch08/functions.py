@@ -83,7 +83,7 @@ def linear_volume(t):
     return 3 * t + 1
 
 
-def instantaneous_flow(vol, t, digits = 6):
+def instantaneous_flow(vol, t, digits=6):
     tolerance = 10 ** (-digits)
     interval = 1
     last_avg_rate = avg_flow_rate(vol, t - interval, t + interval)
@@ -91,7 +91,7 @@ def instantaneous_flow(vol, t, digits = 6):
     for i in range(0, 2 ** digits):
         interval = interval / 10
         current_avg = avg_flow_rate(vol, t - interval, t + interval)
-        difference = abs( last_avg_rate - current_avg )
+        difference = abs(last_avg_rate - current_avg)
         if (difference < tolerance):
             return round(current_avg, digits)
         else:
@@ -112,4 +112,8 @@ def small_volume_change(flow_rate_func, time, duration):
 
 def volume_change(flow_rate_func, start, end, interval):
     times = np.arange(start, end, interval)
-    return sum( [small_volume_change(flow_rate_func, t, interval) for t in times] )
+    return sum([small_volume_change(flow_rate_func, t, interval) for t in times])
+
+
+def approx_volume(flow_rate_f, initial_vol, interval, t):
+    return initial_vol + volume_change(flow_rate_f, 0, t, interval)
