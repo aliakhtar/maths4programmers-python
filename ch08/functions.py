@@ -59,3 +59,9 @@ def plot_secant(f, t1, t2, color='k'):
     line_f = secant_line(f, t1, t2)
     plot_function(line_f, t1, t2, c=color)
     plt.scatter([t1, t2], [f(t1), f(t2)], c=color)
+
+
+def interval_flow_rates(vol, t1, t2, interval):
+    total_hrs = t2 - t1
+    hour_pairs = [ (i, (i + 1) % total_hrs ) for i in range(t1, t2)]
+    return [(start, avg_flow_rate(vol, start, end )) for start, end in hour_pairs]
