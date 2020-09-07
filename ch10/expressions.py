@@ -19,13 +19,16 @@ class Product():
         self.e1 = exp1
         self.e2 = exp2
 
+
 class Sum():
     def __init__(self, *exps):
         self.exps = exps
 
+
 class Function():
     def __init__(self, name):
         self.name = name
+
 
 class Apply():
     def __init__(self, function, argument):
@@ -33,3 +36,7 @@ class Apply():
         self.arg = argument
 
 
+class Quotient():
+    def __init__(self, numerator, denominator):
+        self.numerator = numerator
+        self.denominator = denominator
