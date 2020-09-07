@@ -73,6 +73,7 @@ def main():
         draw_poly(screen, ship, color=WHITE)
 
         for a in asteroids:
+            a.move(milliseconds)
             if keys[pygame.K_SPACE] and a.does_intersect(laser):
                 asteroids.remove(a)
             else:
