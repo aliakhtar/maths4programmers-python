@@ -39,6 +39,11 @@ class PolygonModel():
 
         return False
 
+    def move(self, millis):
+        secs = millis / 1000
+        dx, dy = (self.vx * secs, self.vy * secs)
+        self.x, self.y = add((dx, dy), (self.x, self.y))
+
 
 class Ship(PolygonModel):
     def __init__(self):
@@ -62,3 +67,5 @@ class Asteroid(PolygonModel):
                    for i in range(sides)]
 
         super().__init__(vectors)
+        self.vx = uniform(-1, 1)
+        self.vy = uniform(-1, -1)
