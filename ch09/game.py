@@ -18,6 +18,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
 width, height = 400, 400
+acceleration = 3
 
 
 def to_pixels(x, y):
