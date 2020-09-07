@@ -117,3 +117,7 @@ def volume_change(flow_rate_func, start, end, interval):
 
 def approx_volume(flow_rate_f, initial_vol, interval, t):
     return initial_vol + volume_change(flow_rate_f, 0, t, interval)
+
+
+def approx_volume_function(flow_rate_func, initial_vol, interval):
+    return lambda t: approx_volume(flow_rate_func, initial_vol, interval, t)
