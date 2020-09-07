@@ -40,3 +40,9 @@ class Quotient():
     def __init__(self, numerator, denominator):
         self.numerator = numerator
         self.denominator = denominator
+
+
+class Difference():
+    def __init__(self, e1, e2):
+        self.e1 = e1
+        self.e2 = e2
