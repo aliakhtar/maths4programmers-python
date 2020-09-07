@@ -11,6 +11,8 @@ class PolygonModel():
         self.angle = 0
         self.x = 0
         self.y = 0
+        self.vx = 0
+        self.vy = 0
 
     def transformed(self):
         translation = (self.x, self.y)
