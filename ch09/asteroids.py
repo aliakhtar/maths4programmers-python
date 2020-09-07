@@ -44,6 +44,15 @@ class PolygonModel():
         dx, dy = (self.vx * secs, self.vy * secs)
         self.x, self.y = add((dx, dy), (self.x, self.y))
 
+        if self.x < -10:
+            self.x += 20
+        if self.y < -10:
+            self.y += 20
+        if self.x > 10:
+            self.x -= 20
+        if self.y > 10:
+            self.y -= 20
+
 
 class Ship(PolygonModel):
     def __init__(self):
