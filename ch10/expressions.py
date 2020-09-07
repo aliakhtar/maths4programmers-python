@@ -46,3 +46,8 @@ class Difference():
     def __init__(self, e1, e2):
         self.e1 = e1
         self.e2 = e2
+
+
+class Negative():
+    def __init__(self, expression):
+        self.expression = expression
