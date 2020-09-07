@@ -58,11 +58,22 @@ def main():
         milliseconds = clock.get_time()
         keys = pygame.key.get_pressed()
 
+        for a in asteroids:
+            a.move(milliseconds)
+
         if keys[pygame.K_LEFT]:
             ship.angle += milliseconds * (2*pi / 1000)
 
         if keys[pygame.K_RIGHT]:
             ship.angle -= milliseconds * (2*pi / 1000)
+
+        if keys[pygame.K_UP]:
+            ax = acceleration * cos(ship.angle)
+            ay = acceleration * sin(ship.angle)
+            ship.vx += ax * (milliseconds / 1000)
+            ship.vy += ay * (milliseconds / 1000)
+
+        ship.move(milliseconds)
 
         laser = ship.laser_segment()
 
@@ -74,7 +85,6 @@ def main():
         draw_poly(screen, ship, color=WHITE)
 
         for a in asteroids:
-            a.move(milliseconds)
             if keys[pygame.K_SPACE] and a.does_intersect(laser):
                 asteroids.remove(a)
             else:
