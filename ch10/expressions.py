@@ -10,6 +10,38 @@ def package(item):
         raise ValueError("{} could not be packaged, what you doin hoe?".format(item))
 
 
+def distinct_variables(e):
+    if isinstance(e, Number):
+        return set()
+
+    elif isinstance(e, Variable):
+        return set(e.symbol)
+
+    elif isinstance(e, Product):
+        return distinct_variables(e.left).union(distinct_variables(e.right))
+
+    elif isinstance(e, Sum):
+        return set().union(* [distinct_variables(e) for e in e.items])
+
+    elif isinstance(e, Difference):
+        return distinct_variables(e.bigger).union(distinct_variables(e.smaller))
+
+    elif isinstance(e, Negative):
+        return distinct_variables(e.expression)
+
+    elif isinstance(e, Power):
+        return distinct_variables(e.base).union(distinct_variables(e.exponent))
+
+    elif isinstance(e, Quotient):
+        return distinct_variables(e.numerator).union(distinct_variables(e.denominator))
+
+    elif isinstance(e, Apply):
+        return distinct_variables(e.arg)
+
+    else:
+        raise TypeError("Not a valid expression: {}".format(e))
+
+
 class Expression(ABC):
     def __add__(self, other):
         return Sum(self, package(other))
