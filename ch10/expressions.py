@@ -81,6 +81,20 @@ def contains_sum(e):
         raise TypeError("Not a valid expression")
 
 
+def paren_if_instance(exp, *args):
+    for typ in args:
+        if isinstance(exp, typ):
+            return "\\left( {} \\right)".format(exp.latex())
+    return exp.latex()
+
+
+def dot_if_necessary(latex):
+    if latex[0] in '-1234567890':
+        return '\\cdot {}'.format(latex)
+    else:
+        return latex
+
+
 class Expression(ABC):
     def __add__(self, other):
         return Sum(self, package(other))
@@ -94,6 +108,12 @@ class Expression(ABC):
     def __rmul__(self, other):
         return Product(package(other), self)
 
+    def __truediv__(self, other):
+        return Quotient(self, package(other))
+
+    def __pow__(self, other):
+        return Power(self, package(other))
+
     def __call__(self, **bindings):
         return self.evaluate(**bindings)
 
@@ -104,6 +124,20 @@ class Expression(ABC):
     @abstractmethod
     def evaluate(self, **bindings):
         pass
+
+    @abstractmethod
+    def display(self):
+        pass
+
+    @abstractmethod
+    def latex(self):
+        pass
+
+    def __repr__(self):
+        return self.display()
+
+    def _repr_latex_(self):
+        return "$$" + self.latex() + "$$"
 
 
 class Number(Expression):
@@ -116,6 +150,12 @@ class Number(Expression):
 
     def expand(self):
         return self
+
+    def latex(self):
+        return str(self.number)
+
+    def display(self):
+        return "Number({})".format(self.number)
 
 
 class Variable(Expression):
@@ -131,6 +171,12 @@ class Variable(Expression):
     def expand(self):
         return self
 
+    def latex(self):
+        return self.symbol
+
+    def display(self):
+        return "Variable(\"{}\")".format(self.symbol)
+
 
 class Power(Expression):
     def __init__(self, base, exponent):
@@ -141,7 +187,15 @@ class Power(Expression):
         return self.base.evaluate(**bindings) ** self.exponent.evaluate(**bindings)
 
     def expand(self):
-        pass
+        return self
+
+    def latex(self):
+        return "{} ^ {{ {} }}".format(
+            paren_if_instance(self.base, Sum, Negative, Difference, Quotient, Product),
+            self.exponent.latex())
+
+    def display(self):
+        return "Power({},{})".format(self.base.display(), self.exponent.display())
 
 
 class Product(Expression):
@@ -162,6 +216,14 @@ class Product(Expression):
         else:
             return Product(leftExpanded, rightExpanded)
 
+    def latex(self):
+        return "{}{}".format(
+            paren_if_instance(self.left, Sum, Negative, Difference),
+            dot_if_necessary(paren_if_instance(self.right, Sum, Negative, Difference)))
+
+    def display(self):
+        return "Product({},{})".format(self.left.display(), self.right.display())
+
 
 class Quotient(Expression):
     def __init__(self, numerator, denominator):
@@ -172,7 +234,13 @@ class Quotient(Expression):
         return self.numerator.evaluate(**bindings) / self.denominator.evaluate(**bindings)
 
     def expand(self):
-        pass
+        return self
+
+    def latex(self):
+        return "\\frac{{ {} }}{{ {} }}".format(self.numerator.latex(), self.denominator.latex())
+
+    def display(self):
+        return "Quotient({},{})".format(self.numerator.display(), self.denominator.display())
 
 
 class Sum(Expression):
@@ -184,6 +252,12 @@ class Sum(Expression):
 
     def expand(self):
         return Sum(*[e.expand for e in self.items])
+
+    def latex(self):
+        return " + ".join(exp.latex() for exp in self.items)
+
+    def display(self):
+        return "Sum({})".format(",".join([e.display() for e in self.items]))
 
 
 class Difference(Expression):
@@ -197,6 +271,12 @@ class Difference(Expression):
     def expand(self):
         pass
 
+    def display(self):
+        pass
+
+    def latex(self):
+        pass
+
 
 class Negative(Expression):
     def __init__(self, expression):
@@ -206,7 +286,14 @@ class Negative(Expression):
         return -1 * self.expression.evaluate(**bindings)
 
     def expand(self):
-        pass
+        return self
+
+    def latex(self):
+        return "- {}".format(
+            paren_if_instance(self.expression, Sum, Difference, Negative))
+
+    def display(self):
+        return "Negative({})".format(self.expression.display())
 
 
 class Function():
@@ -217,13 +304,20 @@ class Function():
         "sqrt": math.sqrt,
     }
 
-    def __init__(self, name):
+    def __init__(self, name, make_latex=None):
         try:
             self.f = Function._function_bindings[name]
         except:
             raise KeyError("Function not supported: {}".format(name))
 
+        self.make_latex = make_latex
         self.name = name
+
+    def latex(self, arg_latex):
+        if self.make_latex:
+            return self.make_latex(arg_latex)
+        else:
+            return " \\operatorname{{ {} }} \\left( {} \\right)".format(self.name, arg_latex)
 
 
 class Apply(Expression):
@@ -235,4 +329,10 @@ class Apply(Expression):
         return self.function.f(self.arg.evaluate(**bindings))
 
     def expand(self):
-        pass
+        return Apply(self.function, self.arg.expand())
+
+    def latex(self):
+        return self.function.latex(self.arg.latex())
+
+    def display(self):
+        return "Apply(Function(\"{}\"),{})".format(self.function.name, self.arg.display())
