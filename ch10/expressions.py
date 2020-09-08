@@ -245,6 +245,11 @@ class Product(Expression):
     def simplify(self):
         pass
 
+    def derivative(self, var):
+        a = Product(self.left.derivative(var), self.right)
+        b = Product(self.left, self.right.derivative(var))
+        return Sum(a,b)
+
     def latex(self):
         return "{}{}".format(
             paren_if_instance(self.left, Sum, Negative, Difference),
