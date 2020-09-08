@@ -60,6 +60,25 @@ def distinct_functions(e):
         return distinct_functions(e.base).union(distinct_functions(e.exponent))
     elif isinstance(e, Apply):
         return {e.function.name}.union(distinct_functions(e.arg))
+    else:
+        raise TypeError("Not a valid expression")
+
+
+# Exercise 10.11: Write a function contains_sum that takes an expression and returns True if it contains a Sum, and
+# False otherwise.
+def contains_sum(e):
+    if isinstance(e, Variable) or isinstance(e, Number):
+        return False
+    elif isinstance(e, Sum):
+        return True
+    elif isinstance(e, Product):
+        return contains_sum(e.left) or contains_sum(e.right)
+    elif isinstance(e, Power):
+        return contains_sum(e.base) or contains_sum(e.base)
+    elif isinstance(e, Apply):
+        return contains_sum(e.arg)
+    else:
+        raise TypeError("Not a valid expression")
 
 
 class Expression(ABC):
