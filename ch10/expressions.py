@@ -11,36 +11,21 @@ def package(item):
         raise ValueError("{} could not be packaged, what you doin hoe?".format(item))
 
 
-def distinct_variables(e):
-    if isinstance(e, Number):
+def distinct_variables(exp):
+    if isinstance(exp, Variable):
+        return set(exp.symbol)
+    elif isinstance(exp, Number):
         return set()
-
-    elif isinstance(e, Variable):
-        return set(e.symbol)
-
-    elif isinstance(e, Product):
-        return distinct_variables(e.left).union(distinct_variables(e.right))
-
-    elif isinstance(e, Sum):
-        return set().union(*[distinct_variables(e) for e in e.items])
-
-    elif isinstance(e, Difference):
-        return distinct_variables(e.bigger).union(distinct_variables(e.smaller))
-
-    elif isinstance(e, Negative):
-        return distinct_variables(e.expression)
-
-    elif isinstance(e, Power):
-        return distinct_variables(e.base).union(distinct_variables(e.exponent))
-
-    elif isinstance(e, Quotient):
-        return distinct_variables(e.numerator).union(distinct_variables(e.denominator))
-
-    elif isinstance(e, Apply):
-        return distinct_variables(e.arg)
-
+    elif isinstance(exp, Sum):
+        return set().union(*[distinct_variables(exp) for exp in exp.items])
+    elif isinstance(exp, Product):
+        return distinct_variables(exp.left).union(distinct_variables(exp.right))
+    elif isinstance(exp, Power):
+        return distinct_variables(exp.base).union(distinct_variables(exp.exponent))
+    elif isinstance(exp, Apply):
+        return distinct_variables(exp.arg)
     else:
-        raise TypeError("Not a valid expression: {}".format(e))
+        raise TypeError("Not a valid expression.")
 
 
 class Expression(ABC):
@@ -87,7 +72,7 @@ class Power(Expression):
         self.base = base
 
     def evaluate(self, **bindings):
-        return self.base.evaluate(**bindings) ** self.exponent.evalute(**bindings)
+        return self.base.evaluate(**bindings) ** self.exponent.evaluate(**bindings)
 
 
 class Product(Expression):
@@ -137,7 +122,8 @@ class Function():
     _function_bindings = {
         "sin": math.sin,
         "cos": math.cos,
-        "ln": math.log
+        "ln": math.log,
+        "sqrt": math.sqrt,
     }
 
     def __init__(self, name):
