@@ -141,6 +141,10 @@ class Expression(ABC):
     def derivative(self, var):
         pass
 
+    @abstractmethod
+    def substitute(self, var, expression):
+        pass
+
     def __repr__(self):
         return self.display()
 
@@ -171,6 +175,9 @@ class Number(Expression):
     def derivative(self, var):
         return Number(0)
 
+    def substitute(self, var, expression):
+        return self
+
 
 class Variable(Expression):
     def __init__(self, symbol):
@@ -200,6 +207,12 @@ class Variable(Expression):
         else:
             return Number(0)
 
+    def substitute(self, var, expression):
+        if self.symbol == var.symbol:
+            return expression
+        else:
+            return self
+
 
 class Power(Expression):
     def __init__(self, base, exponent):
@@ -219,6 +232,9 @@ class Power(Expression):
         return "{} ^ {{ {} }}".format(
             paren_if_instance(self.base, Sum, Negative, Difference, Quotient, Product),
             self.exponent.latex())
+
+    def substitute(self, var, exp):
+        return Power(self.base.substitute(var, exp), self.exponent.substitute(var, exp))
 
     def display(self):
         return "Power({},{})".format(self.base.display(), self.exponent.display())
@@ -245,10 +261,13 @@ class Product(Expression):
     def simplify(self):
         pass
 
+    def substitute(self, var, exp):
+        return Product(self.left.substitute(var, exp), self.right.substitute(var, exp))
+
     def derivative(self, var):
         a = Product(self.left.derivative(var), self.right)
         b = Product(self.left, self.right.derivative(var))
-        return Sum(a,b)
+        return Sum(a, b)
 
     def latex(self):
         return "{}{}".format(
@@ -273,6 +292,12 @@ class Quotient(Expression):
     def latex(self):
         return "\\frac{{ {} }}{{ {} }}".format(self.numerator.latex(), self.denominator.latex())
 
+    def substitute(self, var, expression):
+        return Quotient(
+            self.numerator.substitute(var, expression),
+            self.denominator.substitute(var, expression)
+        )
+
     def display(self):
         return "Quotient({},{})".format(self.numerator.display(), self.denominator.display())
 
@@ -296,6 +321,9 @@ class Sum(Expression):
     def display(self):
         return "Sum({})".format(",".join([e.display() for e in self.items]))
 
+    def substitute(self, var, expression):
+        return Sum(*[i.subsitute(var, expression) for i in self.items])
+
     def derivative(self, var):
         return Sum(*[i.derivative(var) for i in self.items])
 
@@ -309,16 +337,21 @@ class Difference(Expression):
         return self.bigger.evaluate(**bindings) - self.smaller.evaluate(**bindings)
 
     def expand(self):
-        pass
+        return self
 
     def simplify(self):
         pass
 
+    def substitute(self, var, expression):
+        return Difference(self.bigger.subsitute(var, expression), self.smaller.substitute(var, expression))
+
     def display(self):
-        pass
+        return "Difference({},{})".format(self.bigger.display(), self.smaller.display())
 
     def latex(self):
-        pass
+        return "{} - {}".format(
+            self.bigger.latex(),
+            paren_if_instance(self.smaller, Sum, Difference, Negative))
 
 
 class Negative(Expression):
@@ -338,21 +371,17 @@ class Negative(Expression):
         return "- {}".format(
             paren_if_instance(self.expression, Sum, Difference, Negative))
 
+    def substitute(self, var, expression):
+        return Negative(self.expression.substitute(var, expression))
+
     def display(self):
         return "Negative({})".format(self.expression.display())
 
 
 class Function():
-    _function_bindings = {
-        "sin": math.sin,
-        "cos": math.cos,
-        "ln": math.log,
-        "sqrt": math.sqrt,
-    }
-
     def __init__(self, name, make_latex=None):
         try:
-            self.f = Function._function_bindings[name]
+            self.f = _function_bindings[name]
         except:
             raise KeyError("Function not supported: {}".format(name))
 
@@ -385,3 +414,25 @@ class Apply(Expression):
 
     def display(self):
         return "Apply(Function(\"{}\"),{})".format(self.function.name, self.arg.display())
+
+    def substitute(self, var, expression):
+        return Apply(self.function, self.arg.substitute(var, expression))
+
+    def derivative(self, var):
+        pass
+
+
+_var = Variable('placeholder variable')
+
+_function_bindings = {
+    "sin": math.sin,
+    "cos": math.cos,
+    "ln": math.log,
+    "sqrt": math.sqrt,  # just to make that one stupid exercise in 10.1 pass. no derivative coded
+}
+
+_derivative_bindings = {
+    "sin": Apply(Function("cos"), _var),
+    "cos": Product(Number(-1), Apply(Function("sin"), _var)),
+    "ln": Quotient(Number(1), _var),
+}
