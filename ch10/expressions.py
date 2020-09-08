@@ -45,6 +45,10 @@ class Expression(ABC):
         return self.evaluate(**bindings)
 
     @abstractmethod
+    def expand(self):
+        pass
+
+    @abstractmethod
     def evaluate(self, **bindings):
         pass
 
@@ -57,6 +61,9 @@ class Number(Expression):
     def evaluate(self, **bindings):
         return self.number
 
+    def expand(self):
+        return self
+
 
 class Variable(Expression):
     def __init__(self, symbol):
@@ -68,6 +75,9 @@ class Variable(Expression):
         except:
             raise KeyError("{} variable is not bound".format(self.symbol))
 
+    def expand(self):
+        return self
+
 
 class Power(Expression):
     def __init__(self, base, exponent):
@@ -76,6 +86,9 @@ class Power(Expression):
 
     def evaluate(self, **bindings):
         return self.base.evaluate(**bindings) ** self.exponent.evaluate(**bindings)
+
+    def expand(self):
+        pass
 
 
 class Product(Expression):
@@ -86,6 +99,17 @@ class Product(Expression):
     def evaluate(self, **bindings):
         return self.left.evaluate(**bindings) * self.right.evaluate(**bindings)
 
+    def expand(self):
+        leftExpanded = self.left.expand()
+        rightExpanded = self.right.expand()
+        if isinstance(leftExpanded, Sum):
+            return Sum(*[Product(e, rightExpanded).expand() for e in leftExpanded.items])
+        elif isinstance(rightExpanded, Sum):
+            return Sum(*[Product(e, rightExpanded) for e in leftExpanded.items ])
+        else:
+            return Product(leftExpanded, rightExpanded)
+
+
 
 class Quotient(Expression):
     def __init__(self, numerator, denominator):
@@ -95,6 +119,9 @@ class Quotient(Expression):
     def evaluate(self, **bindings):
         return self.numerator.evaluate(**bindings) / self.denominator.evaluate(**bindings)
 
+    def expand(self):
+        pass
+
 
 class Sum(Expression):
     def __init__(self, *items):
@@ -102,6 +129,9 @@ class Sum(Expression):
 
     def evaluate(self, **bindings):
         return sum([i.evaluate(**bindings) for i in self.items])
+
+    def expand(self):
+        return Sum(*[e.expand for e in self.items])
 
 
 class Difference(Expression):
@@ -112,6 +142,9 @@ class Difference(Expression):
     def evaluate(self, **bindings):
         return self.bigger.evaluate(**bindings) - self.smaller.evaluate(**bindings)
 
+    def expand(self):
+        pass
+
 
 class Negative(Expression):
     def __init__(self, expression):
@@ -119,6 +152,9 @@ class Negative(Expression):
 
     def evaluate(self, **bindings):
         return -1 * self.expression.evaluate(**bindings)
+
+    def expand(self):
+        pass
 
 
 class Function():
@@ -145,3 +181,6 @@ class Apply(Expression):
 
     def evaluate(self, **bindings):
         return self.function.f(self.arg.evaluate(**bindings))
+
+    def expand(self):
+        pass
