@@ -387,9 +387,9 @@ class Apply(Expression):
         return "Apply(Function(\"{}\"),{})".format(self.function.name, self.argument.display())
 
     def derivative(self, var):
-        return Product(
-            self.argument.derivative(var),
-            _derivatives[self.function.name].substitute(_var, self.argument))
+        hDerivative = self.argument.derivative(var)
+        gDerivative = _derivatives[self.function.name].substitute(_var, self.argument)
+        return Product(hDerivative, gDerivative)
 
     def substitute(self, var, exp):
         return Apply(self.function, self.argument.substitute(var, exp))
