@@ -28,6 +28,25 @@ def distinct_variables(exp):
         raise TypeError("Not a valid expression.")
 
 
+# Exercise 10.9: Write a function contains(expression, variable) that checks whether the given expression
+# contains any occurrence of the specified variable.
+def contains(expr, var):
+    if isinstance(expr, Number):
+        return False
+    elif isinstance(expr, Variable):
+        return expr.symbol == var.symbol
+    elif isinstance(expr, Sum):
+        return any(contains(i, var) for i in expr.items)
+    elif isinstance(expr, Product):
+        return contains(expr.left, var) or contains(expr.right, var)
+    elif isinstance(expr, Power):
+        return contains(expr.base, var) or contains(expr.exponent, var)
+    elif isinstance(expr, Apply):
+        return contains(expr.arg, var)
+    else:
+        raise TypeError("Not a valid expression")
+
+
 class Expression(ABC):
     def __add__(self, other):
         return Sum(self, package(other))
@@ -105,10 +124,9 @@ class Product(Expression):
         if isinstance(leftExpanded, Sum):
             return Sum(*[Product(e, rightExpanded).expand() for e in leftExpanded.items])
         elif isinstance(rightExpanded, Sum):
-            return Sum(*[Product(e, rightExpanded) for e in leftExpanded.items ])
+            return Sum(*[Product(e, rightExpanded) for e in leftExpanded.items])
         else:
             return Product(leftExpanded, rightExpanded)
-
 
 
 class Quotient(Expression):
