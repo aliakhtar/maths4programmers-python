@@ -122,6 +122,10 @@ class Expression(ABC):
         pass
 
     @abstractmethod
+    def simplify(self):
+        pass
+
+    @abstractmethod
     def evaluate(self, **bindings):
         pass
 
@@ -131,6 +135,10 @@ class Expression(ABC):
 
     @abstractmethod
     def latex(self):
+        pass
+
+    @abstractmethod
+    def derivative(self, var):
         pass
 
     def __repr__(self):
@@ -151,11 +159,17 @@ class Number(Expression):
     def expand(self):
         return self
 
+    def simplify(self):
+        return self
+
     def latex(self):
         return str(self.number)
 
     def display(self):
         return "Number({})".format(self.number)
+
+    def derivative(self, var):
+        return Number(0)
 
 
 class Variable(Expression):
@@ -171,11 +185,20 @@ class Variable(Expression):
     def expand(self):
         return self
 
+    def simplify(self):
+        return self
+
     def latex(self):
         return self.symbol
 
     def display(self):
         return "Variable(\"{}\")".format(self.symbol)
+
+    def derivative(self, var):
+        if self.symbol == var.symbol:
+            return Number(1)
+        else:
+            return Number(0)
 
 
 class Power(Expression):
@@ -187,6 +210,9 @@ class Power(Expression):
         return self.base.evaluate(**bindings) ** self.exponent.evaluate(**bindings)
 
     def expand(self):
+        return self
+
+    def simplify(self):
         return self
 
     def latex(self):
@@ -215,6 +241,9 @@ class Product(Expression):
             return Sum(*[Product(e, rightExpanded) for e in leftExpanded.items])
         else:
             return Product(leftExpanded, rightExpanded)
+
+    def simplify(self):
+        pass
 
     def latex(self):
         return "{}{}".format(
@@ -250,6 +279,9 @@ class Sum(Expression):
     def evaluate(self, **bindings):
         return sum([i.evaluate(**bindings) for i in self.items])
 
+    def simplify(self):
+        pass
+
     def expand(self):
         return Sum(*[e.expand for e in self.items])
 
@@ -258,6 +290,9 @@ class Sum(Expression):
 
     def display(self):
         return "Sum({})".format(",".join([e.display() for e in self.items]))
+
+    def derivative(self, var):
+        return Sum(*[i.derivative(var) for i in self.items])
 
 
 class Difference(Expression):
@@ -269,6 +304,9 @@ class Difference(Expression):
         return self.bigger.evaluate(**bindings) - self.smaller.evaluate(**bindings)
 
     def expand(self):
+        pass
+
+    def simplify(self):
         pass
 
     def display(self):
@@ -287,6 +325,9 @@ class Negative(Expression):
 
     def expand(self):
         return self
+
+    def simplify(self):
+        pass
 
     def latex(self):
         return "- {}".format(
@@ -330,6 +371,9 @@ class Apply(Expression):
 
     def expand(self):
         return Apply(self.function, self.arg.expand())
+
+    def simplify(self):
+        pass
 
     def latex(self):
         return self.function.latex(self.arg.latex())
