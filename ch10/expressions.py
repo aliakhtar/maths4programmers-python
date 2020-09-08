@@ -1,4 +1,5 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+import math
 
 
 def package(item):
@@ -21,7 +22,7 @@ def distinct_variables(e):
         return distinct_variables(e.left).union(distinct_variables(e.right))
 
     elif isinstance(e, Sum):
-        return set().union(* [distinct_variables(e) for e in e.items])
+        return set().union(*[distinct_variables(e) for e in e.items])
 
     elif isinstance(e, Difference):
         return distinct_variables(e.bigger).union(distinct_variables(e.smaller))
@@ -55,15 +56,29 @@ class Expression(ABC):
     def __rmul__(self, other):
         return Product(package(other), self)
 
+    @abstractmethod
+    def evaluate(self, **bindings):
+        pass
+
 
 class Number(Expression):
+
     def __init__(self, number):
         self.number = number
+
+    def evaluate(self, **bindings):
+        return self.number
 
 
 class Variable(Expression):
     def __init__(self, symbol):
         self.symbol = symbol
+
+    def evaluate(self, **bindings):
+        try:
+            return bindings[self.symbol]
+        except:
+            raise KeyError("{} variable is not bound".format(self.symbol))
 
 
 class Power(Expression):
@@ -71,11 +86,17 @@ class Power(Expression):
         self.exponent = exponent
         self.base = base
 
+    def evaluate(self, **bindings):
+        return self.base.evaluate(**bindings) ** self.exponent.evalute(**bindings)
+
 
 class Product(Expression):
     def __init__(self, left_e, right_e):
         self.left = left_e
         self.right = right_e
+
+    def evaluate(self, **bindings):
+        return self.left.evaluate(**bindings) * self.right.evaluate(**bindings)
 
 
 class Quotient(Expression):
@@ -83,10 +104,16 @@ class Quotient(Expression):
         self.numerator = numerator
         self.denominator = denominator
 
+    def evaluate(self, **bindings):
+        return self.numerator.evaluate(**bindings) / self.denominator.evaluate(**bindings)
+
 
 class Sum(Expression):
     def __init__(self, *items):
         self.items = items
+
+    def evaluate(self, **bindings):
+        return sum([i.evaluate(**bindings) for i in self.items])
 
 
 class Difference(Expression):
@@ -94,18 +121,38 @@ class Difference(Expression):
         self.bigger = bigger
         self.smaller = smaller
 
+    def evaluate(self, **bindings):
+        return self.bigger.evaluate(**bindings) - self.smaller.evaluate(**bindings)
+
 
 class Negative(Expression):
     def __init__(self, expression):
         self.expression = expression
 
+    def evaluate(self, **bindings):
+        return -1 * self.expression.evaluate(**bindings)
 
-class Function(Expression):
+
+class Function():
+    _function_bindings = {
+        "sin": math.sin,
+        "cos": math.cos,
+        "ln": math.log
+    }
+
     def __init__(self, name):
-        self.items = name
+        try:
+            self.f = Function._function_bindings[name]
+        except:
+            raise KeyError("Function not supported: {}".format(name))
+
+        self.name = name
 
 
 class Apply(Expression):
     def __init__(self, function, arg):
         self.function = function
         self.arg = arg
+
+    def evaluate(self, **bindings):
+        return self.function.f(self.arg.evaluate(**bindings))
