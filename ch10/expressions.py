@@ -41,6 +41,9 @@ class Expression(ABC):
     def __rmul__(self, other):
         return Product(package(other), self)
 
+    def __call__(self, **bindings):
+        return self.evaluate(**bindings)
+
     @abstractmethod
     def evaluate(self, **bindings):
         pass
