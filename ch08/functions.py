@@ -100,8 +100,8 @@ def instantaneous_flow(vol, t, digits=6):
     raise Exception("No derivative found")
 
 
-def get_flow_rate_function(vol):
-    return lambda t: instantaneous_flow(vol, t)
+def get_flow_rate_function(vol, digits=6):
+    return lambda t: instantaneous_flow(vol, t, digits)
 
 
 def small_volume_change(flow_rate_func, time, duration):
