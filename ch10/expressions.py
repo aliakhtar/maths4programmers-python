@@ -47,6 +47,21 @@ def contains(expr, var):
         raise TypeError("Not a valid expression")
 
 
+# Exercise 10.10: Write a distinct_functions function that takes an expression as an argument and returns the
+# distinct, named functions (like sin or ln) that appear in the expression.
+def distinct_functions(e):
+    if isinstance(e, Number) or isinstance(e, Variable):
+        return set()
+    elif isinstance(e, Sum):
+        return set().union(*[distinct_functions(x) for x in e.items])
+    elif isinstance(e, Product):
+        return distinct_functions(e.left).union(distinct_functions(e.right))
+    elif isinstance(e, Power):
+        return distinct_functions(e.base).union(distinct_functions(e.exponent))
+    elif isinstance(e, Apply):
+        return {e.function.name}.union(distinct_functions(e.arg))
+
+
 class Expression(ABC):
     def __add__(self, other):
         return Sum(self, package(other))
