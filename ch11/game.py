@@ -5,6 +5,7 @@ from ch11.vectors import *
 from ch11.asteroids import *
 
 ship = Ship()
+black_hole = BlackHole(0.1)
 asteroids = [Asteroid() for _ in range(10)]
 
 for a in asteroids:
@@ -16,25 +17,36 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+LIGHT_GRAY =  (240, 240, 240)
+DARK_GRAY = (128, 128, 128)
 
 width, height = 400, 400
 acceleration = 3
 
+def to_pixels(x,y):
+    return (width/2 + width * x / 20, height/2 - height * y / 20)
 
-def to_pixels(x, y):
-    # new_x = (x + 10) * 20
-    # new_y = fabs((y - 10) * 20)
-    # return (new_x, new_y)
-    return (width / 2 + width * x / 20, height / 2 - height * y / 20)
+def draw_poly(screen, polygon_model, color=BLACK, fill=False):
+    pixel_points = [to_pixels(x,y) for x,y in polygon_model.transformed()]
+    if fill:
+        pygame.draw.polygon(screen, color, pixel_points, 0)
+    else:
+        pygame.draw.lines(screen, color, True, pixel_points, 2)
+    if polygon_model.draw_center:
+        cx, cy = to_pixels(polygon_model.x, polygon_model.y)
+        pygame.draw.circle(screen, BLACK, (int(cx), int(cy)), 4, 4)
 
+def draw_segment(screen, v1,v2,color=RED):
+    pygame.draw.line(screen, color, to_pixels(*v1), to_pixels(*v2), 2)
 
-def draw_poly(screen, polygon_model, color=GREEN):
-    pixel_points = [to_pixels(x, y) for x, y in polygon_model.transformed()]
-    pygame.draw.aalines(screen, color, True, pixel_points, 10)
+def draw_grid(screen):
+    for x in range(-9,10):
+        draw_segment(screen, (x,-10), (x,10), color=LIGHT_GRAY)
+    for y in range(-9,10):
+        draw_segment(screen, (-10, y), (10, y), color=LIGHT_GRAY)
 
-
-def draw_segment(screen, v1, v2, color=RED):
-    pygame.draw.aaline(screen, color, to_pixels(*v1), to_pixels(*v2), 10)
+    draw_segment(screen, (-10, 0), (10, 0), color=DARK_GRAY)
+    draw_segment(screen, (0, -10), (0, 10), color=DARK_GRAY)
 
 
 def main():
@@ -88,6 +100,7 @@ def main():
             draw_segment(screen, *laser, color=RED)
 
         draw_poly(screen, ship, color=WHITE)
+        draw_poly(screen, black_hole, fill=True, color=RED)
 
         for a in asteroids:
             if keys[pygame.K_SPACE] and a.does_intersect(laser):

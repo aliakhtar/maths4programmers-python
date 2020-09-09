@@ -14,6 +14,7 @@ class PolygonModel():
         self.y = 0
         self.vx = 0
         self.vy = 0
+        self.draw_center = False
 
     def transformed(self):
         translation = (self.x, self.y)
@@ -79,3 +80,10 @@ class Asteroid(PolygonModel):
         super().__init__(vectors)
         self.vx = uniform(-1, 1)
         self.vy = uniform(-1, -1)
+
+
+class BlackHole(PolygonModel):
+    def __init__(self, gravity):
+        vs = [to_cartesian((0.5, 2 * pi * i / 20)) for i in range(0, 20)]
+        super().__init__(vs)
+        self.gravity = gravity
