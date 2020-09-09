@@ -85,7 +85,7 @@ def main():
             ship.angle -= milliseconds * (2 * pi / 1000)
 
         if keys[pygame.K_UP]:
-            thrust_vector = to_cartesian((thrust_vector, ship.angle))
+            thrust_vector = to_cartesian((thrust, ship.angle))
         elif keys[pygame.K_DOWN]:
             thrust_vector = to_cartesian((-thrust, ship.angle))
 
