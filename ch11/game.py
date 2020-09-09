@@ -94,13 +94,14 @@ def main():
 
         laser = ship.laser_segment()
 
-        screen.fill(BLACK)
+        # screen.fill(BLACK)
+        screen.fill(WHITE)
 
         if keys[pygame.K_SPACE]:
             draw_segment(screen, *laser, color=RED)
 
-        draw_poly(screen, ship, color=WHITE)
-        draw_poly(screen, black_hole, fill=True, color=RED)
+        draw_poly(screen, ship)
+        draw_poly(screen, black_hole, fill=True)
 
         for a in asteroids:
             if keys[pygame.K_SPACE] and a.does_intersect(laser):
