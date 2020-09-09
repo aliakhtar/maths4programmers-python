@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import ch11.vectors as vectors
 
 def plot_vector_field(f,xmin,xmax,ymin,ymax,xstep=1,ystep=1):
