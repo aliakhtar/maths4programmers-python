@@ -15,3 +15,7 @@ def plot_vector_field(f,xmin,xmax,ymin,ymax,xstep=1,ystep=1):
 def gravitational_field(source, x, y):
     relative_position = (x - source.x, y - source.y)
     return vectors.scale(-source.gravity, relative_position)
+
+
+def gravitational_field_sum(sources, x,y):
+    return vectors.add(*[gravitational_field(s, x, y) for s in sources])

@@ -16,6 +16,11 @@ class PolygonModel():
         self.vy = 0
         self.draw_center = False
 
+    def set_pos(self, v):
+        x,y = v
+        self.x = x
+        self.y = y
+
     def transformed(self):
         translation = (self.x, self.y)
         # rotated = self
