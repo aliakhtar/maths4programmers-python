@@ -5,7 +5,7 @@ from ch11.vectors import *
 from ch11.functions import *
 from ch11.linear_solver import *
 
-bounce = False
+bounce = True
 class PolygonModel():
     def __init__(self, points):
         self.points = points
