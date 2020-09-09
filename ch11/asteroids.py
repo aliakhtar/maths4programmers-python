@@ -46,10 +46,10 @@ class PolygonModel():
 
         return False
 
-    def move(self, millis, thrust_vector, gravity_source):
+    def move(self, millis, thrust_vector, gravity_sources):
         secs = millis / 1000
         tx, ty = thrust_vector
-        gx, gy = gravitational_field(gravity_source, self.x, self.y)
+        gx, gy = gravitational_field_sum(gravity_sources, self.x, self.y)
         ax = tx + gx
         ay = ty + gy
 

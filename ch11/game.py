@@ -5,7 +5,12 @@ from ch11.vectors import *
 from ch11.asteroids import *
 
 ship = Ship()
-black_hole = BlackHole(0.1)
+bh1 = BlackHole(0.1)
+bh2 = BlackHole(0.1)
+bh1.set_pos((-3, 4))
+bh2.set_pos((2, -1))
+holes = [bh1, bh2]
+
 asteroids = [Asteroid() for _ in range(10)]
 
 for a in asteroids:
@@ -74,8 +79,12 @@ def main():
         milliseconds = clock.get_time()
         keys = pygame.key.get_pressed()
 
+        for my_hole in holes:
+            other_holes = [hole for hole in holes if hole != my_hole]
+            my_hole.move(milliseconds, (0, 0), other_holes)
+
         for a in asteroids:
-            a.move(milliseconds, (0, 0), black_hole)
+            a.move(milliseconds, (0, 0), holes)
 
         thrust_vector = (0, 0)
         if keys[pygame.K_LEFT]:
@@ -89,7 +98,7 @@ def main():
         elif keys[pygame.K_DOWN]:
             thrust_vector = to_cartesian((-thrust, ship.angle))
 
-        ship.move(milliseconds, thrust_vector, black_hole)
+        ship.move(milliseconds, thrust_vector, holes)
 
         laser = ship.laser_segment()
 
@@ -100,7 +109,8 @@ def main():
             draw_segment(screen, *laser, color=RED)
 
         draw_poly(screen, ship)
-        draw_poly(screen, black_hole, fill=True)
+        for hole in holes:
+            draw_poly(screen, hole, fill=True)
 
         for a in asteroids:
             if keys[pygame.K_SPACE] and a.does_intersect(laser):
