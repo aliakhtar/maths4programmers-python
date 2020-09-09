@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib as plt
+import ch11.vectors as vectors
 
 def plot_vector_field(f,xmin,xmax,ymin,ymax,xstep=1,ystep=1):
 
@@ -9,3 +10,8 @@ def plot_vector_field(f,xmin,xmax,ymin,ymax,xstep=1,ystep=1):
     plt.quiver(X, Y, U, V,color='red')
     fig = plt.gcf()
     fig.set_size_inches(7,7)
+
+
+def gravitational_field(source, x, y):
+    relative_position = (x - source.x, y - source.y)
+    return vectors.scale(-source.gravity, relative_position)

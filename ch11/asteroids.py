@@ -5,7 +5,7 @@ from ch11.vectors import *
 from ch11.functions import *
 from ch11.linear_solver import *
 
-
+bounce = True
 class PolygonModel():
     def __init__(self, points):
         self.points = points
@@ -41,19 +41,33 @@ class PolygonModel():
 
         return False
 
-    def move(self, millis):
+    def move(self, millis, thrust_vector, gravity_source):
         secs = millis / 1000
-        dx, dy = (self.vx * secs, self.vy * secs)
-        self.x, self.y = add((dx, dy), (self.x, self.y))
+        tx, ty = thrust_vector
+        gx, gy = gravitational_field(gravity_source, self.x, self.y)
+        ax = tx + gx
+        ay = ty + gy
 
-        if self.x < -10:
-            self.x += 20
-        if self.y < -10:
-            self.y += 20
-        if self.x > 10:
-            self.x -= 20
-        if self.y > 10:
-            self.y -= 20
+        self.vx += ax * secs
+        self.vy += ay * secs
+
+        self.x += self.vx * secs
+        self.y += self.vy * secs
+
+        if bounce:
+            if self.x < -10 or self.x > 10:
+                self.vx = - self.vx
+            if self.y < -10 or self.y > 10:
+                self.vy = - self.vy
+        else:
+            if self.x < -10:
+                self.x += 20
+            if self.y < -10:
+                self.y += 20
+            if self.x > 10:
+                self.x -= 20
+            if self.y > 10:
+                self.y -=20
 
 
 class Ship(PolygonModel):

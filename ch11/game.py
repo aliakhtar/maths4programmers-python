@@ -17,17 +17,19 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-LIGHT_GRAY =  (240, 240, 240)
+LIGHT_GRAY = (240, 240, 240)
 DARK_GRAY = (128, 128, 128)
 
 width, height = 400, 400
-acceleration = 3
+thrust = 3
 
-def to_pixels(x,y):
-    return (width/2 + width * x / 20, height/2 - height * y / 20)
+
+def to_pixels(x, y):
+    return (width / 2 + width * x / 20, height / 2 - height * y / 20)
+
 
 def draw_poly(screen, polygon_model, color=BLACK, fill=False):
-    pixel_points = [to_pixels(x,y) for x,y in polygon_model.transformed()]
+    pixel_points = [to_pixels(x, y) for x, y in polygon_model.transformed()]
     if fill:
         pygame.draw.polygon(screen, color, pixel_points, 0)
     else:
@@ -36,13 +38,15 @@ def draw_poly(screen, polygon_model, color=BLACK, fill=False):
         cx, cy = to_pixels(polygon_model.x, polygon_model.y)
         pygame.draw.circle(screen, BLACK, (int(cx), int(cy)), 4, 4)
 
-def draw_segment(screen, v1,v2,color=RED):
+
+def draw_segment(screen, v1, v2, color=RED):
     pygame.draw.line(screen, color, to_pixels(*v1), to_pixels(*v2), 2)
 
+
 def draw_grid(screen):
-    for x in range(-9,10):
-        draw_segment(screen, (x,-10), (x,10), color=LIGHT_GRAY)
-    for y in range(-9,10):
+    for x in range(-9, 10):
+        draw_segment(screen, (x, -10), (x, 10), color=LIGHT_GRAY)
+    for y in range(-9, 10):
         draw_segment(screen, (-10, y), (10, y), color=LIGHT_GRAY)
 
     draw_segment(screen, (-10, 0), (10, 0), color=DARK_GRAY)
@@ -71,26 +75,21 @@ def main():
         keys = pygame.key.get_pressed()
 
         for a in asteroids:
-            a.move(milliseconds)
+            a.move(milliseconds, (0, 0), black_hole)
 
+        thrust_vector = (0, 0)
         if keys[pygame.K_LEFT]:
-            ship.angle += milliseconds * (2*pi / 1000)
+            ship.angle += milliseconds * (2 * pi / 1000)
 
         if keys[pygame.K_RIGHT]:
-            ship.angle -= milliseconds * (2*pi / 1000)
+            ship.angle -= milliseconds * (2 * pi / 1000)
 
         if keys[pygame.K_UP]:
-            ax = acceleration * cos(ship.angle)
-            ay = acceleration * sin(ship.angle)
-            ship.vx += ax * (milliseconds / 1000)
-            ship.vy += ay * (milliseconds / 1000)
+            thrust_vector = to_cartesian((thrust_vector, ship.angle))
         elif keys[pygame.K_DOWN]:
-            ax = -(acceleration * cos(ship.angle))
-            ay = -(acceleration * sin(ship.angle))
-            ship.vx += ax * (milliseconds / 1000)
-            ship.vy += ay * (milliseconds / 1000)
+            thrust_vector = to_cartesian((-thrust, ship.angle))
 
-        ship.move(milliseconds)
+        ship.move(milliseconds, thrust_vector, black_hole)
 
         laser = ship.laser_segment()
 
