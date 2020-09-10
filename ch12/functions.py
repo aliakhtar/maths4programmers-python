@@ -22,6 +22,22 @@ def trajectory(angle, speed=20, dt=0.1, height=0, g=-9.81):
     return times, xs, zs
 
 
+def landing_position(traj):
+    return traj[1][-1]
+
+
+def hang_time(traj):
+    # for t, z in (traj[0], traj[2]):
+    #    if z <= 0:
+    #        return t
+
+    return traj[0][-1]
+
+
+def max_height(traj):
+    return max(traj[2])
+
+
 def plot_function(f, xmin, xmax, **kwargs):
     ts = np.linspace(xmin, xmax, 1000)
     plt.plot(ts, [f(t) for t in ts], **kwargs)
