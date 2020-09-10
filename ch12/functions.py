@@ -38,6 +38,11 @@ def max_height(traj):
     return max(traj[2])
 
 
+def plot_trajectory_metric(metric_f, angles, **settings):
+    metrics = [metric_f(trajectory(a, **settings)) for a in angles]
+    plt.scatter(angles, metrics)
+
+
 def plot_function(f, xmin, xmax, **kwargs):
     ts = np.linspace(xmin, xmax, 1000)
     plt.plot(ts, [f(t) for t in ts], **kwargs)
