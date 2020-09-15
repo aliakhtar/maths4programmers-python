@@ -68,3 +68,11 @@ def plot_trajectories(*trajs, show_seconds=False):
     coords_height = (plt.ylim()[1] - plt.ylim()[0])
     coords_width = (plt.xlim()[1] - plt.xlim()[0])
     plt.gcf().set_size_inches(width, width * coords_height / coords_width)
+
+
+def secant_slope(f, xmin, xmax):
+    return (f(xmax) - f(xmin)) / xmax - xmin
+
+
+def approx_derivative(f, x, dx=1e-6):
+    return secant_slope(f, x - dx, x + dx)
