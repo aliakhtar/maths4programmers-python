@@ -117,3 +117,43 @@ def gradient_ascent(f, x_start, y_start, tolerance=1e-6):
         grad = approx_gradient(f, x, y)
 
     return x, y
+
+def gradient_ascent_points(f, x_start, y_start, tolerance=1e-6):
+    x, y = x_start, y_start
+    grad = approx_gradient(f, x, y)
+    xs = [x]
+    ys = [y]
+    while vectors.length(grad) > tolerance:
+        x += grad[0]
+        y += grad[1]
+        xs.append(x)
+        ys.append(y)
+        grad = approx_gradient(f, x, y)
+
+    return xs, ys
+
+
+def scalar_field_heatmap(f, xmin, xmax, ymin, ymax, xsteps=100, ysteps=100):
+    fig = plt.figure()
+    fig.set_size_inches(7, 7)
+
+    fv = np.vectorize(f)
+
+    X = np.linspace(xmin, xmax, xsteps)
+    Y = np.linspace(ymin, ymax, ysteps)
+    X, Y = np.meshgrid(X, Y)
+
+    # https://stackoverflow.com/a/54088910/1704140
+    z = fv(X, Y)
+
+    #     # x and y are bounds, so z should be the value *inside* those bounds.
+    #     # Therefore, remove the last value from the z array.
+    #     z = z[:-1, :-1]
+    #     z_min, z_max = -z.min(), z.max()
+
+    fig, ax = plt.subplots()
+
+    c = ax.pcolormesh(X, Y, z, cmap='plasma')
+    # set the limits of the plot to the limits of the data
+    ax.axis([X.min(), X.max(), Y.min(), Y.max()])
+    fig.colorbar(c, ax=ax)
