@@ -76,3 +76,9 @@ def secant_slope(f, xmin, xmax):
 
 def approx_derivative(f, x, dx=1e-6):
     return secant_slope(f, x - dx, x + dx)
+
+
+def approx_gradient(f, x0, y0, dx=1e-6):
+    partial_x = approx_derivative(lambda x: f(x, y0), x0, dx=dx)
+    partial_y = approx_derivative(lambda y: f(x0, y), y0, dx=dx)
+    return (partial_x, partial_y)
