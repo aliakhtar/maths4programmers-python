@@ -3,6 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 import numpy as np
 from math import sin, cos, pi, sqrt
+import ch12.vectors as vectors
 
 
 def trajectory(angle, speed=20, dt=0.1, height=0, g=-9.81):
@@ -105,3 +106,14 @@ def landing_distance(theta, phi):  # <3>
     landing_time = -b / a  # <6>
     l_distance = v_xy * landing_time  # <7>
     return l_distance
+
+
+def gradient_ascent(f, x_start, y_start, tolerance=1e-6):
+    x, y = x_start, y_start
+    grad = approx_gradient(f, x, y)
+    while vectors.length(grad) > tolerance:
+        x += grad[0]
+        y += grad[1]
+        grad = approx_gradient(f, x, y)
+
+    return x, y
