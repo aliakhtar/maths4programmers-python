@@ -72,7 +72,7 @@ def plot_trajectories(*trajs, show_seconds=False):
 
 
 def secant_slope(f, xmin, xmax):
-    return (f(xmax) - f(xmin)) / xmax - xmin
+    return (f(xmax) - f(xmin)) / (xmax - xmin)
 
 
 def approx_derivative(f, x, dx=1e-6):
