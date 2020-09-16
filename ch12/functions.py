@@ -118,14 +118,15 @@ def gradient_ascent(f, x_start, y_start, tolerance=1e-6):
 
     return x, y
 
-def gradient_ascent_points(f, x_start, y_start, tolerance=1e-6):
+
+def gradient_ascent_points(f, x_start, y_start, tolerance=1e-6, rate=1):
     x, y = x_start, y_start
     grad = approx_gradient(f, x, y)
     xs = [x]
     ys = [y]
     while vectors.length(grad) > tolerance:
-        x += grad[0]
-        y += grad[1]
+        x += rate * grad[0]
+        y += rate * grad[1]
         xs.append(x)
         ys.append(y)
         grad = approx_gradient(f, x, y)
@@ -157,3 +158,8 @@ def scalar_field_heatmap(f, xmin, xmax, ymin, ymax, xsteps=100, ysteps=100):
     # set the limits of the plot to the limits of the data
     ax.axis([X.min(), X.max(), Y.min(), Y.max()])
     fig.colorbar(c, ax=ax)
+
+
+def count_gradient_ascent_steps(f, x_start, y_start, tolerance=1e-6, rate=1):
+    points = gradient_ascent_points(f, x_start, y_start, tolerance=tolerance, rate=rate)
+    return len(points[0])
