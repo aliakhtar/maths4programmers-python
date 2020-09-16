@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 import numpy as np
-from math import sin, cos, pi
+from math import sin, cos, pi, sqrt
 
 
 def trajectory(angle, speed=20, dt=0.1, height=0, g=-9.81):
@@ -82,3 +82,26 @@ def approx_gradient(f, x0, y0, dx=1e-6):
     partial_x = approx_derivative(lambda x: f(x, y0), x0, dx=dx)
     partial_y = approx_derivative(lambda y: f(x0, y), y0, dx=dx)
     return (partial_x, partial_y)
+
+
+B = 0.001
+C = 0.005
+v = 20
+g = -9.81
+
+
+def velocity_components(v, theta, phi):  # <2>
+    vx = v * cos(theta * pi / 180) * cos(phi * pi / 180)
+    vy = v * cos(theta * pi / 180) * sin(phi * pi / 180)
+    vz = v * sin(theta * pi / 180)
+    return vx, vy, vz
+
+
+def landing_distance(theta, phi):  # <3>
+    vx, vy, vz = velocity_components(v, theta, phi)
+    v_xy = sqrt(vx ** 2 + vy ** 2)  # <4>
+    a = (g / 2) - B * vx ** 2 + C * vy ** 2  # <5>
+    b = vz
+    landing_time = -b / a  # <6>
+    l_distance = v_xy * landing_time  # <7>
+    return l_distance
