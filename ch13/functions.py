@@ -18,3 +18,10 @@ def plot_sequence(points, max=100, line=False, **kwargs):
 def make_sinusoid(freq, amp):
     f = lambda t: amp * sin(freq * 2 * pi * t)
     return f
+
+
+def sample(f, start, end, count):
+    mapf = np.vectorize(f)
+    ts = np.arange(start, end, (end - start) / count)
+    values = mapf(ts)
+    return values.astype(np.int16)
