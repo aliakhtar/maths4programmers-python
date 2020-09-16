@@ -37,5 +37,7 @@ def fourier_series(a0, a, b):
     def result(t):
         cos_terms = terms(t, cos, a)
         sin_terms = terms(t, sin, b)
-        return sum(cos_terms, sin_terms) + (a0*const(t))
+        terms_total = sum(cos_terms) + sum(sin_terms)
+        c = a0 * const(t)
+        return c + terms_total
     return result
