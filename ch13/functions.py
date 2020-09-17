@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from math import sin, cos, pi
+from math import sin, cos, pi, sqrt
 
 
 def plot_function(f, xmin, xmax, **kwargs):
@@ -40,4 +40,19 @@ def fourier_series(a0, a, b):
         terms_total = sum(cos_terms) + sum(sin_terms)
         c = a0 * const(t)
         return c + terms_total
+
     return result
+
+
+def const_basis(n): return 1 / sqrt(2)
+
+
+def s(n): return lambda t: sin(2 * pi * n * t)
+
+
+def c(n): return lambda t: cos(2 * pi * n * t)
+
+
+def inner_product(f, g, steps=1000):
+    dt = 1 / steps
+    return 2 * sum([f(t) * g(t) * dt for t in np.arange(0, 1, dt)])
