@@ -38,7 +38,8 @@ def fourier_series(a0, a, b):
         cos_terms = terms(t, cos, a)
         sin_terms = terms(t, sin, b)
         terms_total = sum(cos_terms) + sum(sin_terms)
-        c = a0 * const(t)
+        # c = a0 * const(t)
+        c = a0 * const_basis(t)
         return c + terms_total
 
     return result
@@ -56,3 +57,14 @@ def c(n): return lambda t: cos(2 * pi * n * t)
 def inner_product(f, g, steps=1000):
     dt = 1 / steps
     return 2 * sum([f(t) * g(t) * dt for t in np.arange(0, 1, dt)])
+
+
+def fourier_coefficients(f, N):
+    a0 = inner_product(f, const_basis)
+    an = [inner_product(c(n), f)
+          for n in range(1, N + 1)]
+
+    bn = [inner_product(s(n), f)
+          for n in range(1, N + 1)]
+
+    return a0, an, bn
